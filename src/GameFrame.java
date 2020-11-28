@@ -3,6 +3,7 @@ import java.util.*;
 
 public interface GameFrame extends Remote
 {
-	public int login(String name) throws java.rmi.RemoteException;
+	public Player login(Player player) throws java.rmi.RemoteException;
+	public int join(Player player) throws java.rmi.RemoteException;
 }
 

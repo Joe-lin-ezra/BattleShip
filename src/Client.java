@@ -37,12 +37,12 @@ class Client
 	
 	public static boolean login(GameFrame	o, Player player)
 	{
+		System.out.print("input username: ");
 		player.name = scanner.nextLine();
 		try
 		{
-			int id = o.login(player.name());
-			player.id = id;
-			System.out.println(id);
+			player = o.login(player);
+			System.out.println(player.id);
 			return true;
 		}
 		catch(Exception e)
@@ -57,9 +57,8 @@ class Client
 	{
 		try
 		{
-			int roomNumber = o.join(id);
-			player.roomId = roomNumber;
-			System.out.println(roomNumber);
+			player = o.join(id);
+			System.out.println(player.roomId);
 			return true;
 		}
 		catch(Exception e)
