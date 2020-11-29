@@ -1,14 +1,13 @@
 import java.rmi.*;
 import java.rmi.server.*;
 import java.util.*;
+import java.lang.*;
 
-import java.util.Random;
-import java.util.Map;
 
 public class GameRMIImpl extends UnicastRemoteObject implements GameFrame
 {
 	int counter = 0; // for user index
-	Map<Integer, Room> rooms = new hashMap<Integer, Room>();
+	Map<Integer, Room> rooms = new HashMap<Integer, Room>();
 	
 	Random random = new Random();
 
@@ -35,7 +34,7 @@ public class GameRMIImpl extends UnicastRemoteObject implements GameFrame
 			return -1;
 		}
 		
-		for(Room room : rooms)
+		for(Room room : rooms.values())  // hashmap has special fpr each
 		{
 			if(room.isAvailableJoin())
 			{
@@ -63,7 +62,7 @@ public class GameRMIImpl extends UnicastRemoteObject implements GameFrame
 
 			// put the player into the new room
 			Room room = new Room(key);
-			room.join(player);
+			room.joinRoom(player);
 
 			// put the new room into rooms list
 			rooms.put(key, new Room(key));

@@ -1,8 +1,8 @@
-import java.util.ArrayList;
+import java.util.*;
 
 public class Room {
     int id;
-    List<Player> players = new ArrayList<Player>();
+    List<Player> players = new ArrayList<Player>(); //java List not equal to java ArrayList so you need to import both of them
 
     public Room(int roomId)
     {

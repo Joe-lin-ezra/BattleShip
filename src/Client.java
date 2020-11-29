@@ -4,17 +4,19 @@ import java.util.*;
 
 class Client
 {
+	static Scanner scaneer = new Scanner(System.in); // because static method need use static object
+	static Player player = null;
 	public static void main(String args[])
 	{
 	    GameFrame	o = null;
-		Scanner scaneer = new Scanner(System.in);
+		
 		String c = null;
 
 		//System.setSecurityManager(new RMISecurityManager());
 		// Connect to RMIServer
 		try
 		{
-			// localhost if connect other computer please modify here
+			// default is localhost if connect other computer please modify here
 			o = (GameFrame) Naming.lookup("rmi://127.0.0.1/game");
 			//System.out.println("RMI server connected");
 		}
@@ -25,7 +27,7 @@ class Client
 		
 
 
-		Player player = new Player();
+		player = new Player();
 
 		// run login function in client
 		while(!login(o, player)) {}
@@ -37,8 +39,9 @@ class Client
 	
 	public static boolean login(GameFrame	o, Player player)
 	{
+		
 		System.out.print("input username: ");
-		player.name = scanner.nextLine();
+		player.name = scaneer.nextLine();
 		try
 		{
 			player = o.login(player);
@@ -57,7 +60,7 @@ class Client
 	{
 		try
 		{
-			player = o.join(id);
+			player = o.join(player); // Let player join game(room)
 			System.out.println(player.roomId);
 			return true;
 		}
