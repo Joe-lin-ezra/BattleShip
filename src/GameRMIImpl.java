@@ -23,7 +23,7 @@ public class GameRMIImpl extends UnicastRemoteObject implements GameFrame
 		return player;
 	}
 
-	/* 	To find whether there is a room can be entered
+	/* 	To find whether there is a room can enter
 		found, return room index
 		not found, return -1 
 	*/
@@ -49,7 +49,10 @@ public class GameRMIImpl extends UnicastRemoteObject implements GameFrame
 		// if there is any room is available to join
 		if((roomId = isRoomFree()) != -1)
 		{
-			rooms.get(roomId).joinRoom(player);
+			Room room = rooms.get(roomId);
+			room.joinRoom(player);
+			room.state = "playing";
+			rooms.put(roomId, room);
 		}
 		else
 		{
@@ -68,6 +71,38 @@ public class GameRMIImpl extends UnicastRemoteObject implements GameFrame
 			rooms.put(key, new Room(key));
 		}
 		return player;
+	}
+
+	/* to get the room state, and return string
+	// "free": the player2 place is free
+	// "playing": the players in the room began to play
+	*/
+	public String getRoomState(Player player) 
+	{
+		int roomIndex = player.roomId;
+		Room room = rooms.get(roomIndex);
+		return room.getState();
+	}
+
+	/* to set the player map, and return string
+	// "free": the player2 place is free
+	// "playing": the players in the room began to play
+	*/
+	public String setPlayerMap(Player player)
+	{
+		Room room = rooms.get(player.roomId);
+		for(int i = 0; i < room.players.size(); i++)
+		{
+			Player tmpPlayer = room.players.get(i);
+			if(player.id == tmpPlayer.id)
+			{
+				room.players.remove(i);
+				room.players.add(player);
+				rooms.put(player.id, room);
+				return "success"
+			}	
+		}
+		return "fail";
 	}
 }
 

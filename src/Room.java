@@ -3,6 +3,7 @@ import java.util.*;
 public class Room {
     int id;
     List<Player> players = new ArrayList<Player>(); //java List not equal to java ArrayList so you need to import both of them
+    String state = new String("free");
 
     public Room(int roomId)
     {
@@ -25,4 +26,8 @@ public class Room {
         return false;
     }
 
+    public String getState()
+    {
+        return state;
+    }
 }
