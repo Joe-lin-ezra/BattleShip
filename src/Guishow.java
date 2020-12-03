@@ -8,18 +8,19 @@ import javax.swing.border.*;
 public class Guishow{
 	
 	private final JPanel gui = new JPanel(new BorderLayout(3, 3));
-	private JButton[][] chessBoardSquares = new JButton[10][10];
-	private JPanel chessBoardy,chessBoarde,chessBoard;
+	private JPanel chessBoardy,chessBoarde;
 	private Chessboard chessBoardz;
 	JScrollPane jScrollPane=null;
 	private JTextArea area = new JTextArea();
 	private static final String COLS = "ABCDEFGHIJK";
+	private final JLabel message = new JLabel("Warship battle!!!!!");
 	int i,j;
 	Guishow(){
 		initializeGui();
 	}
 	public final void initializeGui(){
 		gui.setBorder(new EmptyBorder(5, 5, 5, 5)); // make border style
+		gui.add(message,BorderLayout.NORTH);
 		chessBoardy = new JPanel(new GridLayout(0, 11));
 		chessBoardy.setBorder(new LineBorder(Color.BLACK));
 		chessBoardz = new Chessboard('y');
@@ -38,9 +39,6 @@ public class Guishow{
 		//---------------------------------------------------
 		}
 	
-	public final JComponent getChessBoard() {
-        return chessBoard;
-    }
 	public final JComponent getGui() {
         return gui;
     }
@@ -57,6 +55,7 @@ public class Guishow{
 				f.pack();
                 f.setMinimumSize(f.getSize());// ensures the minimum size is enforced.
                 f.setVisible(true);
+				f.setResizable(false);
 			}
 		}; 
 		SwingUtilities.invokeLater(r);
@@ -82,7 +81,7 @@ class Chessboard extends JPanel{// make chessboard
 	public void mkchessboard(){
 		chessBoard = new JPanel(new GridLayout(0, 11)); // let chessBoard has 11 cols
 		chessBoard.setBorder(new LineBorder(Color.BLACK));
-		Insets buttonMargin = new Insets(5,5,5,5); // define button sizes **I Can't explain how it work
+		Insets buttonMargin = new Insets(10,10,10,10); // define button sizes 
 		for(i = 0; i < chessBoardSquares.length; i++){ 
 			for(j = 0; j < chessBoardSquares[i].length ; j++){
 				char t = a; // check 
