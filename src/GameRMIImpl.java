@@ -17,7 +17,7 @@ public class GameRMIImpl extends UnicastRemoteObject implements GameFrame
 		System.out.println("create new GameRMIImpl");
 	}
 
-	public Player login(Player player)
+	public Player login(Player player) throws java.rmi.RemoteException
 	{	
 		player.id = counter++;
 		return player;
@@ -27,7 +27,7 @@ public class GameRMIImpl extends UnicastRemoteObject implements GameFrame
 		found, return room index
 		not found, return -1 
 	*/
-	private int isRoomFree()
+	private int isRoomFree() throws java.rmi.RemoteException
 	{
 		if(rooms.isEmpty()) 
 		{
@@ -43,7 +43,7 @@ public class GameRMIImpl extends UnicastRemoteObject implements GameFrame
 		}
 		return -1;
 	}
-	public Player join(Player player)
+	public Player join(Player player) throws java.rmi.RemoteException
 	{	
 		int roomId;
 		// if there is any room is available to join
@@ -77,7 +77,7 @@ public class GameRMIImpl extends UnicastRemoteObject implements GameFrame
 	// "free": the player2 place is free
 	// "playing": the players in the room began to play
 	*/
-	public String getRoomState(Player player) 
+	public String getRoomState(Player player)  throws java.rmi.RemoteException
 	{
 		int roomIndex = player.roomId;
 		Room room = rooms.get(roomIndex);
@@ -85,10 +85,9 @@ public class GameRMIImpl extends UnicastRemoteObject implements GameFrame
 	}
 
 	/* to set the player map, and return string
-	// "free": the player2 place is free
-	// "playing": the players in the room began to play
+	// "success" or "fail"
 	*/
-	public String setPlayerMap(Player player)
+	public String setPlayerMap(Player player) throws java.rmi.RemoteException
 	{
 		Room room = rooms.get(player.roomId);
 		for(int i = 0; i < room.players.size(); i++)
@@ -99,9 +98,51 @@ public class GameRMIImpl extends UnicastRemoteObject implements GameFrame
 				room.players.remove(i);
 				room.players.add(player);
 				rooms.put(player.id, room);
-				return "success"
+				return "success";
 			}	
 		}
+		return "fail";
+	}
+
+	// check whether i win this game 
+	private boolean isWin(Player player)
+	{
+		Room room = rooms.get(player.roomId);
+		// find another player
+		for(Player another: room.players)
+		{
+			if(another.id != player.id)
+			{
+				if(another.shipLocation.size() == 0)
+				{
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	// player go attack his/her opponent
+	public String attack(Player player, ArrayList<Integer> location) throws java.rmi.RemoteException
+	{
+		Room room = rooms.get(player.roomId);
+		Player opponent = null;
+
+		// find another player
+		for(Player another: room.players)
+		{
+			if(another.id != player.id)
+			{
+				opponent = another;
+				room.players.remove(another);
+			}
+		}
+
+		if(opponent.shipLocation.contains(location))
+		{
+			opponent.shipLocation.remove(location);
+		}
+		room.players.add(opponent);
+		rooms.put(player.roomId, room);
 		return "fail";
 	}
 }

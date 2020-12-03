@@ -11,6 +11,8 @@ public interface GameFrame extends Remote
 	// free: the player2 place is free
 	// playing: the players in the room began to play
 	public String getRoomState(Player player) throws java.rmi.RemoteException;
+	// to set player map in server
 	public String setPlayerMap(Player player) throws java.rmi.RemoteException; 
+	public String attack(Player player, ArrayList<Integer> location) throws java.rmi.RemoteException;
 }
 
