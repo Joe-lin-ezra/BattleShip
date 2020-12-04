@@ -105,7 +105,7 @@ public class GameRMIImpl extends UnicastRemoteObject implements GameFrame
 	}
 
 	// check whether i win this game 
-	private boolean isWin(Player player)
+	public boolean isWin(Player player) throws java.rmi.RemoteException
 	{
 		Room room = rooms.get(player.roomId);
 		// find another player
