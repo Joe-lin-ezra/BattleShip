@@ -145,5 +145,21 @@ public class GameRMIImpl extends UnicastRemoteObject implements GameFrame
 		rooms.put(player.roomId, room);
 		return "fail";
 	}
+
+	public Player getPlayerState(Player player) throws java.rmi.RemoteException
+	{
+		Room room = rooms.get(player.roomId);
+		Player self = null;
+
+		// find self state
+		for(Player another: room.players)
+		{
+			if(another.id == player.id)
+			{
+				self = another;
+			}
+		}
+		return self;
+	}
 }
 
