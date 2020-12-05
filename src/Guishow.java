@@ -6,50 +6,114 @@ import javax.swing.border.*;
 
 
 public class Guishow{
+	Client client = null;
+	private final JPanel guia = new JPanel(new BorderLayout(3, 3));  //test
+	private final JPanel guic = new JPanel(new BorderLayout(3, 3));  //test
+	//private static final JPanel gui = new JPanel(new BorderLayout(3, 3));
 	
-	private final JPanel gui = new JPanel(new BorderLayout(3, 3));
 	private JPanel chessBoardy,chessBoarde;
 	private Chessboard chessBoardz;
+	
+	private static JFrame f;
+	
 	JScrollPane jScrollPane=null;
+	private JPanel title = new JPanel(new FlowLayout(FlowLayout.CENTER));
+	private JPanel content  = new JPanel(new FlowLayout(FlowLayout.LEADING));
+	private JButton conb = new JButton("Start Game");
+	private JLabel namelabel = new JLabel("Nickname :");
+	private JTextField nickname;
 	private JTextArea area = new JTextArea();
 	private static final String COLS = "ABCDEFGHIJK";
 	private final JLabel message = new JLabel("Warship battle!!!!!");
+	private boolean check_login = false;
+	private boolean check_join = false;
+	//FlowLayout layout = new FlowLayout(FlowLayout.CENTER, 0, 0); 
 	int i,j;
+	
 	Guishow(){
-		initializeGui();
+		client = new Client();
+		welcomepage();
+		//initializeGui();
 	}
+	private void update(){
+		f.remove(guia);
+		//f.setVisible(false);
+		f.setSize(800,400);
+		initializeGui();
+		f.add(guic);
+		f.setMinimumSize(f.getSize());// ensures the minimum size is enforced.
+		//f.invalidate();
+		//f.repaint();
+		f.setVisible(true);
+	}
+	public final void welcomepage(){
+		guia.setBorder(new EmptyBorder(5, 5, 5, 5)); // make border style
+		nickname = new JTextField(20);
+		//gui.setLayout(layout);
+		ActionListener buttonListener = new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        check_login = client.login(nickname.getText()); // call function login by RMI
+						if(check_login == true){
+							System.out.println("login"); // use to debug
+							check_join = client.join(); // call function join by RMI
+									if(client.join()==true)
+									{
+										while(true){
+											System.out.println("w");
+											if(client.player.roomId != -1){
+												update();
+												System.out.println("done");
+												break;
+											}
+										}
+									}
+						}
+						
+                    }
+				};
+		conb.addActionListener(buttonListener);
+		title.add(message);
+		guia.add(title,BorderLayout.NORTH);
+		content.add(namelabel);
+		content.add(nickname);
+		content.add(conb);
+		guia.add(content,BorderLayout.CENTER);
+	}
+	
 	public final void initializeGui(){
-		gui.setBorder(new EmptyBorder(5, 5, 5, 5)); // make border style
-		gui.add(message,BorderLayout.NORTH);
-		chessBoardy = new JPanel(new GridLayout(0, 11));
-		chessBoardy.setBorder(new LineBorder(Color.BLACK));
-		chessBoardz = new Chessboard('y');
-		chessBoardy=chessBoardz.getChessBoard();
-		gui.add(chessBoardy,BorderLayout.WEST);
-		area.setLineWrap(true);
+		guic.setBorder(new EmptyBorder(5, 5, 5, 5)); // make border style
+		guic.add(message,BorderLayout.NORTH); 
+		chessBoardy = new JPanel(new GridLayout(0, 11));// get new board
+		chessBoardy.setBorder(new LineBorder(Color.BLACK)); // set chessboard
+		chessBoardz = new Chessboard('y'); // make new chessboard
+		chessBoardy=chessBoardz.getChessBoard(); // change type
+		guic.add(chessBoardy,BorderLayout.WEST); // add chessboard in west
+		area.setLineWrap(true); 
 		jScrollPane = new JScrollPane(area);
-		gui.add(jScrollPane,BorderLayout.CENTER);
+		guic.add(jScrollPane,BorderLayout.CENTER);
 		chessBoarde = new JPanel(new GridLayout(1, 11));
 		chessBoarde.setBorder(new LineBorder(Color.BLACK));
 		chessBoardz = new Chessboard('e');
 		chessBoarde=chessBoardz.getChessBoard();
-		gui.add(chessBoarde,BorderLayout.EAST);
-		
+		guic.add(chessBoarde,BorderLayout.EAST);
 		//chessBoarde = new mkchessboard();
 		//---------------------------------------------------
 		}
 	
-	public final JComponent getGui() {
+	/*public final JComponent getGui() {
         return gui;
+    }*/
+	public final JComponent getGuia() {
+        return guia;
     }
 	public static void main(String args[]){
 		System.out.println("Hello Gui!!");
 		Runnable r = new Runnable() {
 			@Override
 			public void run(){
-				Guishow gui = new Guishow();
-				JFrame f = new JFrame("warship");
-				f.add(gui.getGui());
+				Guishow guib = new Guishow();
+				f = new JFrame("warship");
+				f.add(guib.getGuia());
 				f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);// let Gui close when user use "x"
 				f.setLocationByPlatform(true);//
 				f.pack();
@@ -75,7 +139,7 @@ class Chessboard extends JPanel{// make chessboard
 	}
 	
 	public JPanel getChessBoard() {  // return 
-		System.out.println("return chessboard");
+		//System.out.println("return chessboard");
         return chessBoard;
     }
 	public void mkchessboard(){
