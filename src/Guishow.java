@@ -55,7 +55,7 @@ public class Guishow{
                         check_login = client.login(nickname.getText()); // call function login by RMI
 						if(check_login == true){
 							System.out.println("login"); // use to debug
-							check_join = client.join(); // call function join by RMI
+							//check_join = client.join(); // call function join by RMI
 									if(client.join()==true)
 									{
 										while(true){
@@ -64,6 +64,8 @@ public class Guishow{
 												update();
 												System.out.println("done");
 												break;
+											}else{
+												System.out.println("waiting");
 											}
 										}
 									}
