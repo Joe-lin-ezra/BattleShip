@@ -40,6 +40,8 @@ public class UnitTestofServer {
     {
         try {
             player = o.join(player);
+            
+            // print imformation of updated player
             System.out.println("player id: " + player.id + ", name: " + player.name + "room id: " + player.roomId);
         }
         catch(Exception e)

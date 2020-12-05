@@ -17,6 +17,7 @@ public class GameRMIImpl extends UnicastRemoteObject implements GameFrame
 		System.out.println("create new GameRMIImpl");
 	}
 
+	// to print the server state in that time
 	private void printState()
 	{
 		System.out.println("================       status begin       ========================");
