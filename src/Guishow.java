@@ -19,6 +19,7 @@ public class Guishow{
 	JScrollPane jScrollPane=null;
 	private JPanel title = new JPanel(new FlowLayout(FlowLayout.CENTER));
 	private JPanel content  = new JPanel(new FlowLayout(FlowLayout.LEADING));
+	private JPanel ground  = new JPanel(new FlowLayout(FlowLayout.LEADING));
 	private JButton conb = new JButton("Start Game");
 	private JLabel namelabel = new JLabel("Nickname :");
 	private JTextField nickname;
@@ -27,9 +28,15 @@ public class Guishow{
 	private final JLabel message = new JLabel("Warship battle!!!!!");
 	private boolean check_login = false;
 	private boolean check_join = false;
+	//define deploy button
+	private JButton aircraft_carrier = new JButton("BBV"); //Shorthand
+	private JButton battleship = new JButton("BB");
+	private JButton cruiser = new JButton("CL");
+	private JButton destroyer = new JButton("DD");
+	private JButton submarine = new JButton("SS");
 	//FlowLayout layout = new FlowLayout(FlowLayout.CENTER, 0, 0); 
 	int i,j;
-	
+	public int ship_longths=1,ships_ver=0;
 	Guishow(){
 		client = new Client();
 		welcomepage();
@@ -56,23 +63,23 @@ public class Guishow{
 						if(check_login == true){
 							System.out.println("login"); // use to debug
 							//check_join = client.join(); // call function join by RMI
-									if(client.join()==true)
-									{
-										while(true){
-											System.out.println("w");
-											if(client.player.roomId != -1){
-												update();
-												System.out.println("done");
-												break;
-											}else{
-												System.out.println("waiting");
-											}
-										}
+							if(client.join()==true)
+							{
+								while(true){
+									System.out.println("w");
+									if(client.player.roomId != -1){
+										update();
+										System.out.println("done");
+										break;
+									}else{
+										System.out.println("waiting");
 									}
+									
+								}
+							}
 						}
-						
-                    }
-				};
+					}
+		};
 		conb.addActionListener(buttonListener);
 		title.add(message);
 		guia.add(title,BorderLayout.NORTH);
@@ -80,6 +87,7 @@ public class Guishow{
 		content.add(nickname);
 		content.add(conb);
 		guia.add(content,BorderLayout.CENTER);
+		
 	}
 	
 	public final void initializeGui(){
@@ -89,19 +97,56 @@ public class Guishow{
 		chessBoardy.setBorder(new LineBorder(Color.BLACK)); // set chessboard
 		chessBoardz = new Chessboard('y'); // make new chessboard
 		chessBoardy=chessBoardz.getChessBoard(); // change type
-		guic.add(chessBoardy,BorderLayout.WEST); // add chessboard in west
+		guic.add(chessBoardy,BorderLayout.EAST); // add chessboard in west
 		area.setLineWrap(true); 
 		jScrollPane = new JScrollPane(area);
 		guic.add(jScrollPane,BorderLayout.CENTER);
-		chessBoarde = new JPanel(new GridLayout(1, 11));
-		chessBoarde.setBorder(new LineBorder(Color.BLACK));
-		chessBoardz = new Chessboard('e');
-		chessBoarde=chessBoardz.getChessBoard();
-		guic.add(chessBoarde,BorderLayout.EAST);
+		//chessBoarde = new JPanel(new GridLayout(1, 11));
+		//chessBoarde.setBorder(new LineBorder(Color.BLACK));
+		chessBoardz = new Chessboard('z');
+		//chessBoarde=chessBoardz.getChessBoard();
+		guic.add(chessBoardz.getChessBoard(),BorderLayout.WEST);
+		System.out.println(chessBoardz.getship_longth());
+		ground.add(aircraft_carrier); //BBV // deploy 
+		ground.add(battleship);//BB
+		ground.add(cruiser); //CL
+		ground.add(destroyer); //DD
+		ground.add(submarine); //SS
+		guic.add(ground,BorderLayout.SOUTH);
+		ActionListener deployListener = new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+                        if(e.getActionCommand() == "BBV"){
+							System.out.println("BBV");
+							chessBoardz.setship_longth(5);  //
+							//chessBoardy.ship_longth=5;
+						}else if(e.getActionCommand() == "BB"){
+							System.out.println("BB");
+							chessBoardz.ship_longth=4;
+							//chessBoardy.ship_longth=4;
+						}else if(e.getActionCommand() == "CL"){
+							System.out.println("CL");
+							chessBoardz.ship_longth=3;
+							//chessBoardy.ship_longth=3;
+						}else if(e.getActionCommand() == "DD"){
+							System.out.println("DD");
+							chessBoardz.ship_longth=2;
+							//chessBoardy.ship_longth=2;
+						}else if(e.getActionCommand() == "SS"){
+							System.out.println("SS");
+							chessBoardz.ship_longth=1;
+							//chessBoardy.ship_longth=1;
+						}
+				//System.out.println("get!! x is " + x + " y is " + y + "t is " + t);
+            }
 		//chessBoarde = new mkchessboard();
 		//---------------------------------------------------
-		}
-	
+		};
+		aircraft_carrier.addActionListener(deployListener);
+		battleship.addActionListener(deployListener);
+		cruiser.addActionListener(deployListener);
+		destroyer.addActionListener(deployListener);
+		submarine.addActionListener(deployListener);
+	}
 	/*public final JComponent getGui() {
         return gui;
     }*/
@@ -134,25 +179,34 @@ class Chessboard extends JPanel{// make chessboard
 	int i,j;
 	public char a = '0';//just use to check chessboard generator if a == e mean this object is chessBoarde or this object is chessBoardy 
 	private static final String COLS = "ABCDEFGHIJK";
+	public int ship_longth=1,ship_ver=0;// here need modfy when user select
 	Chessboard(char a){// constructor
 		this.a = a;
 		System.out.println("make chessboard");
 		mkchessboard();
 	}
-	
+	public int getship_longth(){
+		return this.ship_longth;
+	}
+	public void setship_longth(int a){
+		this.ship_longth=a;
+	}
 	public JPanel getChessBoard() {  // return 
 		//System.out.println("return chessboard");
         return chessBoard;
     }
+	
 	public void mkchessboard(){
+		
 		chessBoard = new JPanel(new GridLayout(0, 11)); // let chessBoard has 11 cols
 		chessBoard.setBorder(new LineBorder(Color.BLACK));
 		Insets buttonMargin = new Insets(10,10,10,10); // define button sizes 
+		
 		for(i = 0; i < chessBoardSquares.length; i++){ 
 			for(j = 0; j < chessBoardSquares[i].length ; j++){
 				char t = a; // check 
-				int x=i+1; // button ID x
-				int y=j+1; // button ID y
+				int y=i; // button ID x
+				int x=j; // button ID y
 				JButton b = new JButton();  // make new button 
 				b.setMargin(buttonMargin);  //**I Can't explain how it work 
 				b.setBackground(Color.BLUE);
@@ -163,9 +217,229 @@ class Chessboard extends JPanel{// make chessboard
 						System.out.println("get!! x is " + x + " y is " + y + "t is " + t);
                     }
 				};
+				
 				this.chessBoardSquares[j][i] = b; 
 				this.chessBoardSquares[j][i].addActionListener(buttonListener);
-				System.out.println("x is " + x + " y is " + y);
+				MouseListener deploychess = new MouseListener() {
+					// mouselistener 
+					
+					public void mouseReleased(MouseEvent e) {
+					}
+					public void mousePressed(MouseEvent e) {
+					}
+					public void mouseExited(MouseEvent e) {
+						//chessBoardSquares[x][y].setBackground(Color.BLUE);
+						if(ship_ver == 0){
+							try{
+								switch(ship_longth){
+									case 1:
+										chessBoardSquares[x][y].setBackground(Color.BLUE);
+										break;
+									case 2:
+										chessBoardSquares[x][y].setBackground(Color.BLUE);
+										chessBoardSquares[x+1][y].setBackground(Color.BLUE);
+										break;
+									case 3:
+										chessBoardSquares[x-1][y].setBackground(Color.BLUE);
+										chessBoardSquares[x][y].setBackground(Color.BLUE);
+										chessBoardSquares[x+1][y].setBackground(Color.BLUE);
+										break;
+									case 4:
+										chessBoardSquares[x-2][y].setBackground(Color.BLUE);
+										chessBoardSquares[x-1][y].setBackground(Color.BLUE);
+										chessBoardSquares[x][y].setBackground(Color.BLUE);
+										chessBoardSquares[x+1][y].setBackground(Color.BLUE);
+										break;
+									case 5:
+										chessBoardSquares[x-2][y].setBackground(Color.BLUE);
+										chessBoardSquares[x-1][y].setBackground(Color.BLUE);
+										chessBoardSquares[x][y].setBackground(Color.BLUE);
+										chessBoardSquares[x+1][y].setBackground(Color.BLUE);
+										chessBoardSquares[x+2][y].setBackground(Color.BLUE);
+										break;
+								}
+							} catch (Exception ex){
+								System.out.println("out of range");
+							}
+							
+						}else if(ship_ver == 1){
+							try{
+								switch(ship_longth){
+									case 1:
+										chessBoardSquares[x][y].setBackground(Color.BLUE);
+										break;
+									case 2:
+										chessBoardSquares[x][y].setBackground(Color.BLUE);
+										chessBoardSquares[x][y+1].setBackground(Color.BLUE);
+										break;
+									case 3:
+										chessBoardSquares[x][y-1].setBackground(Color.BLUE);
+										chessBoardSquares[x][y].setBackground(Color.BLUE);
+										chessBoardSquares[x][y+1].setBackground(Color.BLUE);
+										break;
+									case 4:
+										chessBoardSquares[x][y-2].setBackground(Color.BLUE);
+										chessBoardSquares[x][y-1].setBackground(Color.BLUE);
+										chessBoardSquares[x][y].setBackground(Color.BLUE);
+										chessBoardSquares[x][y+1].setBackground(Color.BLUE);
+										break;
+									case 5:
+										chessBoardSquares[x][y-2].setBackground(Color.BLUE);
+										chessBoardSquares[x][y-1].setBackground(Color.BLUE);
+										chessBoardSquares[x][y].setBackground(Color.BLUE);
+										chessBoardSquares[x][y+1].setBackground(Color.BLUE);
+										chessBoardSquares[x][y+2].setBackground(Color.BLUE);
+										break;
+							}
+							}catch(Exception ex){
+								System.out.println("out of range");
+							}
+							
+						}
+					}
+					public void mouseEntered(MouseEvent e) {
+						if(ship_ver == 0){
+							try{
+								switch(ship_longth){
+									case 1:
+										chessBoardSquares[x][y].setBackground(Color.BLACK);
+										break;
+									case 2:
+										chessBoardSquares[x][y].setBackground(Color.BLACK);
+										chessBoardSquares[x+1][y].setBackground(Color.BLACK);
+										break;
+									case 3:
+										chessBoardSquares[x-1][y].setBackground(Color.BLACK);
+										chessBoardSquares[x][y].setBackground(Color.BLACK);
+										chessBoardSquares[x+1][y].setBackground(Color.BLACK);
+										break;
+									case 4:
+										chessBoardSquares[x-2][y].setBackground(Color.BLACK);
+										chessBoardSquares[x-1][y].setBackground(Color.BLACK);
+										chessBoardSquares[x][y].setBackground(Color.BLACK);
+										chessBoardSquares[x+1][y].setBackground(Color.BLACK);
+										break;
+									case 5:
+										chessBoardSquares[x-2][y].setBackground(Color.BLACK);
+										chessBoardSquares[x-1][y].setBackground(Color.BLACK);
+										chessBoardSquares[x][y].setBackground(Color.BLACK);
+										chessBoardSquares[x+1][y].setBackground(Color.BLACK);
+										chessBoardSquares[x+2][y].setBackground(Color.BLACK);
+										break;
+								}
+							} catch (Exception ex){
+								System.out.println("out of range");
+							}
+							
+						}else if(ship_ver == 1){
+							try{
+								switch(ship_longth){
+									case 1:
+										chessBoardSquares[x][y].setBackground(Color.BLACK);
+										break;
+									case 2:
+										chessBoardSquares[x][y].setBackground(Color.BLACK);
+										chessBoardSquares[x][y+1].setBackground(Color.BLACK);
+										break;
+									case 3:
+										chessBoardSquares[x][y-1].setBackground(Color.BLACK);
+										chessBoardSquares[x][y].setBackground(Color.BLACK);
+										chessBoardSquares[x][y+1].setBackground(Color.BLACK);
+										break;
+									case 4:
+										chessBoardSquares[x][y-2].setBackground(Color.BLACK);
+										chessBoardSquares[x][y-1].setBackground(Color.BLACK);
+										chessBoardSquares[x][y].setBackground(Color.BLACK);
+										chessBoardSquares[x][y+1].setBackground(Color.BLACK);
+										break;
+									case 5:
+										chessBoardSquares[x][y-2].setBackground(Color.BLACK);
+										chessBoardSquares[x][y-1].setBackground(Color.BLACK);
+										chessBoardSquares[x][y].setBackground(Color.BLACK);
+										chessBoardSquares[x][y+1].setBackground(Color.BLACK);
+										chessBoardSquares[x][y+2].setBackground(Color.BLACK);
+										break;
+							}
+							}catch(Exception ex){
+								System.out.println("out of range");
+							}
+							
+						}
+						//chessBoardSquares[x][y].setBackground(Color.BLACK);
+						//System.out.println("Mouse Entered!!  x is " + x + " y is " + y + "t is " + t);
+					}
+					public void mouseClicked(MouseEvent e) {
+						int c = e.getButton();
+						if (c == MouseEvent.BUTTON1){ 
+							System.out.println("deploy!!!");
+						}
+						if (c == MouseEvent.BUTTON3) {
+							if(ship_ver==1){
+								switch(ship_longth){
+									case 1:
+										chessBoardSquares[x][y].setBackground(Color.BLUE);
+										break;
+									case 2:
+										chessBoardSquares[x][y].setBackground(Color.BLUE);
+										chessBoardSquares[x][y+1].setBackground(Color.BLUE);
+										break;
+									case 3:
+										chessBoardSquares[x][y-1].setBackground(Color.BLUE);
+										chessBoardSquares[x][y].setBackground(Color.BLUE);
+										chessBoardSquares[x][y+1].setBackground(Color.BLUE);
+										break;
+									case 4:
+										chessBoardSquares[x][y-2].setBackground(Color.BLUE);
+										chessBoardSquares[x][y-1].setBackground(Color.BLUE);
+										chessBoardSquares[x][y].setBackground(Color.BLUE);
+										chessBoardSquares[x][y+1].setBackground(Color.BLUE);
+										break;
+									case 5:
+										chessBoardSquares[x][y-2].setBackground(Color.BLUE);
+										chessBoardSquares[x][y-1].setBackground(Color.BLUE);
+										chessBoardSquares[x][y].setBackground(Color.BLUE);
+										chessBoardSquares[x][y+1].setBackground(Color.BLUE);
+										chessBoardSquares[x][y+2].setBackground(Color.BLUE);
+										break;
+							}
+								ship_ver=0;
+							}else if(ship_ver == 0){
+								switch(ship_longth){
+									case 1:
+										chessBoardSquares[x][y].setBackground(Color.BLUE);
+										break;
+									case 2:
+										chessBoardSquares[x][y].setBackground(Color.BLUE);
+										chessBoardSquares[x+1][y].setBackground(Color.BLUE);
+										break;
+									case 3:
+										chessBoardSquares[x-1][y].setBackground(Color.BLUE);
+										chessBoardSquares[x][y].setBackground(Color.BLUE);
+										chessBoardSquares[x+1][y].setBackground(Color.BLUE);
+										break;
+									case 4:
+										chessBoardSquares[x-2][y].setBackground(Color.BLUE);
+										chessBoardSquares[x-1][y].setBackground(Color.BLUE);
+										chessBoardSquares[x][y].setBackground(Color.BLUE);
+										chessBoardSquares[x+1][y].setBackground(Color.BLUE);
+										break;
+									case 5:
+										chessBoardSquares[x-2][y].setBackground(Color.BLUE);
+										chessBoardSquares[x-1][y].setBackground(Color.BLUE);
+										chessBoardSquares[x][y].setBackground(Color.BLUE);
+										chessBoardSquares[x+1][y].setBackground(Color.BLUE);
+										chessBoardSquares[x+2][y].setBackground(Color.BLUE);
+										break;
+								}
+								ship_ver=1;
+							}
+							System.out.println("switch!!!");
+						}
+					}
+					
+				};
+				this.chessBoardSquares[j][i].addMouseListener(deploychess);
+				//System.out.println("x is " + x + " y is " + y);
 			}
 		}
 		//System.out.println("check 1");
