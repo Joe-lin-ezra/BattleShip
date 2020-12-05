@@ -31,6 +31,7 @@ public class GameRMIImpl extends UnicastRemoteObject implements GameFrame
 	{
 		if(rooms.isEmpty()) 
 		{
+			//System.out.println("rooms is empty!!!"); // debug
 			return -1;
 		}
 		
@@ -38,6 +39,7 @@ public class GameRMIImpl extends UnicastRemoteObject implements GameFrame
 		{
 			if(room.isAvailableJoin())
 			{
+				//System.out.println("rooms Id is " + room.id); // debug
 				return room.id;
 			}
 		}
@@ -50,8 +52,10 @@ public class GameRMIImpl extends UnicastRemoteObject implements GameFrame
 		if((roomId = isRoomFree()) != -1)
 		{
 			Room room = rooms.get(roomId);
+			//System.out.println("player " + player.name + " is join " + room.id);// debug
 			room.joinRoom(player);
 			room.state = "playing";
+			//System.out.println(" room " + room.id + " state is " + room.state); // debug
 			rooms.put(roomId, room);
 		}
 		else
@@ -65,8 +69,10 @@ public class GameRMIImpl extends UnicastRemoteObject implements GameFrame
 
 			// put the player into the new room
 			Room room = new Room(key);
+			//System.out.println("make a new room id: " + room.id); // debug
 			room.joinRoom(player);
-
+			//System.out.println("player " + player.name + " is room " + room.id  +" owner "); //debug
+			
 			// put the new room into rooms list
 			rooms.put(key, new Room(key));
 		}
@@ -144,22 +150,6 @@ public class GameRMIImpl extends UnicastRemoteObject implements GameFrame
 		room.players.add(opponent);
 		rooms.put(player.roomId, room);
 		return "fail";
-	}
-
-	public Player getSelfState(Player player) throws java.rmi.RemoteException
-	{
-		Room room = rooms.get(player.roomId);
-		Player self = null;
-
-		// find self state
-		for(Player another: room.players)
-		{
-			if(another.id == player.id)
-			{
-				self = another;
-			}
-		}
-		return self;
 	}
 }
 
