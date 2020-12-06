@@ -39,9 +39,9 @@ public class GameRMIImpl extends UnicastRemoteObject implements GameFrame
 				if(player.shipLocation != null)
 				{
 					System.out.print("\t\t\t");
-					for(List<Integer> position: player.shipLocation)
-					{	System.out.println("in");
-						System.out.print("(" + position.get(0) + ", " + position.get(1) + "), ");
+					for(Location position: player.shipLocation)
+					{	
+						System.out.print("(" + position.x + ", " + position.y + "), ");
 					}
 					System.out.println();
 				}
@@ -133,15 +133,16 @@ public class GameRMIImpl extends UnicastRemoteObject implements GameFrame
 		Room room = rooms.get(player.roomId);
 		for(int i = 0; i < room.players.size(); i++)
 		{
-			Player tmpPlayer = room.players.get(i);
-			if(player.id == tmpPlayer.id)
+			Player another = room.players.get(i);
+			if(player.id == another.id)
 			{
 				room.players.remove(i);
 				room.players.add(player);
-				rooms.put(player.id, room);
+				printState();
 				return "success";
 			}	
 		}
+		printState();
 		return "fail";
 	}
 
@@ -163,7 +164,7 @@ public class GameRMIImpl extends UnicastRemoteObject implements GameFrame
 		return false;
 	}
 	// player go attack his/her opponent
-	public String attack(Player player, ArrayList<Integer> location) throws java.rmi.RemoteException
+	public String attack(Player player, Location location) throws java.rmi.RemoteException
 	{
 		Room room = rooms.get(player.roomId);
 		Player opponent = null;
@@ -174,16 +175,19 @@ public class GameRMIImpl extends UnicastRemoteObject implements GameFrame
 			if(another.id != player.id)
 			{
 				opponent = another;
-				room.players.remove(another);
 			}
 		}
-
-		if(opponent.shipLocation.contains(location))
+		System.out.println(location.x + ", " + location.y + ", " + location + ", "+ opponent.shipLocation.get(1));
+		for(Location l: opponent.shipLocation)
 		{
-			opponent.shipLocation.remove(location);
+			if((l.x == location.x) && (l.y == location.y))
+			{
+				opponent.shipLocation.remove(l);
+				printState();
+				return "success";
+			}
 		}
-		room.players.add(opponent);
-		rooms.put(player.roomId, room);
+		printState();
 		return "fail";
 	}
 

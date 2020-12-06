@@ -30,8 +30,32 @@ public class UnitTestofServer {
         }
         System.out.println("room state: " + state);
 
+        for(int i = 0; i < 7; i++)
+        {
+            player.shipLocation.add(new Location(i, i));
+        }
         
-    
+        // set player map
+        try
+        {
+            String str = o.setPlayerMap(player);
+            System.out.println(str);
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        
+        try
+        {
+            String str = o.attack(player, new Location(1, 1));
+            System.out.println(str);
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+
     }
 
     // the function is to test RMI login 
@@ -55,7 +79,7 @@ public class UnitTestofServer {
             player = o.join(player);
             
             // print imformation of updated player
-            System.out.println("player id: " + player.id + ", name: " + player.name + "room id: " + player.roomId);
+            System.out.println("player id: " + player.id + ", name: " + player.name + ", room id: " + player.roomId);
         }
         catch(Exception e)
         {

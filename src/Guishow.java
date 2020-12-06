@@ -39,7 +39,7 @@ public class Guishow{
 	//FlowLayout layout = new FlowLayout(FlowLayout.CENTER, 0, 0); 
 	int i,j;
 	public int ship_longths=1,ships_ver=0;
-	public ArrayList<Locate> location = new ArrayList<Locate>();
+	public ArrayList<Location> location = new ArrayList<Location>(); // changing "Locate" to "Location"
 	Guishow(){
 		client = new Client();
 		welcomepage();
@@ -151,7 +151,7 @@ public class Guishow{
 								for (j = 0; j < 10; j++) {
 									if(chessBoardz.getChessButton(i,j).getBackground()==Color.yellow)
 									{
-										Locate ddd = new Locate(i,j);
+										Location ddd = new Location(i,j); // changing "Locate" to "Location"
 										location.add(ddd);
 										System.out.println("(" + i + "," + j + ") is yellow");
 									}

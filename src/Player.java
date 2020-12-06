@@ -6,5 +6,5 @@ public class Player implements Serializable
     int id;
     String name;
     int roomId;
-    List<Location> shipLocation;
+    List<Location> shipLocation = new ArrayList<Location>();
 }
