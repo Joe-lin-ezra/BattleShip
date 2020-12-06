@@ -3,6 +3,7 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import javax.swing.*;
 import javax.swing.border.*;
+import java.util.*;
 
 
 public class Guishow{
@@ -34,9 +35,11 @@ public class Guishow{
 	private JButton cruiser = new JButton("CL");
 	private JButton destroyer = new JButton("DD");
 	private JButton submarine = new JButton("SS");
+	private JButton deployyy = new JButton("Deploy");
 	//FlowLayout layout = new FlowLayout(FlowLayout.CENTER, 0, 0); 
 	int i,j;
 	public int ship_longths=1,ships_ver=0;
+	public ArrayList<Locate> location = new ArrayList<Locate>();
 	Guishow(){
 		client = new Client();
 		welcomepage();
@@ -106,13 +109,20 @@ public class Guishow{
 		chessBoardz = new Chessboard('z');
 		//chessBoarde=chessBoardz.getChessBoard();
 		guic.add(chessBoardz.getChessBoard(),BorderLayout.WEST);
-		System.out.println(chessBoardz.getship_longth());
-		ground.add(aircraft_carrier); //BBV // deploy 
+		//System.out.println(chessBoardz.getship_longth());
+		ground.add(aircraft_carrier); //BBV 
 		ground.add(battleship);//BB
 		ground.add(cruiser); //CL
 		ground.add(destroyer); //DD
 		ground.add(submarine); //SS
+		ground.add(deployyy);// deploy 
 		guic.add(ground,BorderLayout.SOUTH);
+		/*ActionListener deployee = new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				System.out.println("eee");
+				System.out.println(chessBoardz.getChessButton(0,1));
+			}
+		};*/
 		ActionListener deployListener = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
                         if(e.getActionCommand() == "BBV"){
@@ -135,6 +145,18 @@ public class Guishow{
 							System.out.println("SS");
 							chessBoardz.ship_longth=1;
 							//chessBoardy.ship_longth=1;
+						}else if(e.getActionCommand() == "Deploy"){
+							//System.out.println("eee");
+							for (i = 0; i < 10; i++) {
+								for (j = 0; j < 10; j++) {
+									if(chessBoardz.getChessButton(i,j).getBackground()==Color.yellow)
+									{
+										Locate ddd = new Locate(i,j);
+										location.add(ddd);
+										System.out.println("(" + i + "," + j + ") is yellow");
+									}
+								}
+							}
 						}
 				//System.out.println("get!! x is " + x + " y is " + y + "t is " + t);
             }
@@ -146,6 +168,7 @@ public class Guishow{
 		cruiser.addActionListener(deployListener);
 		destroyer.addActionListener(deployListener);
 		submarine.addActionListener(deployListener);
+		deployyy.addActionListener(deployListener);
 	}
 	/*public final JComponent getGui() {
         return gui;
@@ -195,7 +218,10 @@ class Chessboard extends JPanel{// make chessboard
 		//System.out.println("return chessboard");
         return chessBoard;
     }
-	
+	public JButton getChessButton(int x,int y) {  // return 
+		//System.out.println("return chessboard");
+        return chessBoardSquares[x][y];
+    }
 	public void mkchessboard(){
 		
 		chessBoard = new JPanel(new GridLayout(0, 11)); // let chessBoard has 11 cols
@@ -207,19 +233,20 @@ class Chessboard extends JPanel{// make chessboard
 				char t = a; // check 
 				int y=i; // button ID x
 				int x=j; // button ID y
+				//int sel= 0; // check this buttin is been selected
 				JButton b = new JButton();  // make new button 
 				b.setMargin(buttonMargin);  //**I Can't explain how it work 
 				b.setBackground(Color.BLUE);
-				ActionListener buttonListener = new ActionListener() {
+				/*ActionListener buttonListener = new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         //this block is use to check is button work
 						// this block can use to transfer data  
 						System.out.println("get!! x is " + x + " y is " + y + "t is " + t);
                     }
-				};
+				};*/
 				
 				this.chessBoardSquares[j][i] = b; 
-				this.chessBoardSquares[j][i].addActionListener(buttonListener);
+				//this.chessBoardSquares[j][i].addActionListener(buttonListener);
 				MouseListener deploychess = new MouseListener() {
 					// mouselistener 
 					
@@ -229,6 +256,8 @@ class Chessboard extends JPanel{// make chessboard
 					}
 					public void mouseExited(MouseEvent e) {
 						//chessBoardSquares[x][y].setBackground(Color.BLUE);
+						if(chessBoardSquares[x][y].getBackground() != Color.YELLOW){
+							//System.out.println(chessBoardSquares[x][y].getBackground());
 						if(ship_ver == 0){
 							try{
 								switch(ship_longth){
@@ -296,8 +325,12 @@ class Chessboard extends JPanel{// make chessboard
 							}
 							
 						}
+						}else{
+							System.out.println("tt");
+						}
 					}
 					public void mouseEntered(MouseEvent e) {
+						if(chessBoardSquares[x][y].getBackground() != Color.YELLOW){
 						if(ship_ver == 0){
 							try{
 								switch(ship_longth){
@@ -365,13 +398,81 @@ class Chessboard extends JPanel{// make chessboard
 							}
 							
 						}
+						}
 						//chessBoardSquares[x][y].setBackground(Color.BLACK);
 						//System.out.println("Mouse Entered!!  x is " + x + " y is " + y + "t is " + t);
 					}
 					public void mouseClicked(MouseEvent e) {
 						int c = e.getButton();
-						if (c == MouseEvent.BUTTON1){ 
+						if (c == MouseEvent.BUTTON1){ //------deploy------
 							System.out.println("deploy!!!");
+							if(ship_ver == 0){
+							try{
+								switch(ship_longth){
+									case 1:
+										chessBoardSquares[x][y].setBackground(Color.YELLOW);
+										break;
+									case 2:
+										chessBoardSquares[x][y].setBackground(Color.YELLOW);
+										chessBoardSquares[x+1][y].setBackground(Color.YELLOW);
+										break;
+									case 3:
+										chessBoardSquares[x-1][y].setBackground(Color.YELLOW);
+										chessBoardSquares[x][y].setBackground(Color.YELLOW);
+										chessBoardSquares[x+1][y].setBackground(Color.YELLOW);
+										break;
+									case 4:
+										chessBoardSquares[x-2][y].setBackground(Color.YELLOW);
+										chessBoardSquares[x-1][y].setBackground(Color.YELLOW);
+										chessBoardSquares[x][y].setBackground(Color.YELLOW);
+										chessBoardSquares[x+1][y].setBackground(Color.YELLOW);
+										break;
+									case 5:
+										chessBoardSquares[x-2][y].setBackground(Color.YELLOW);
+										chessBoardSquares[x-1][y].setBackground(Color.YELLOW);
+										chessBoardSquares[x][y].setBackground(Color.YELLOW);
+										chessBoardSquares[x+1][y].setBackground(Color.YELLOW);
+										chessBoardSquares[x+2][y].setBackground(Color.YELLOW);
+										break;
+								}
+							} catch (Exception ex){
+								System.out.println("out of range");
+							}
+							
+						}else if(ship_ver == 1){
+							try{
+								switch(ship_longth){
+									case 1:
+										chessBoardSquares[x][y].setBackground(Color.YELLOW);
+										break;
+									case 2:
+										chessBoardSquares[x][y].setBackground(Color.YELLOW);
+										chessBoardSquares[x][y+1].setBackground(Color.YELLOW);
+										break;
+									case 3:
+										chessBoardSquares[x][y-1].setBackground(Color.YELLOW);
+										chessBoardSquares[x][y].setBackground(Color.YELLOW);
+										chessBoardSquares[x][y+1].setBackground(Color.YELLOW);
+										break;
+									case 4:
+										chessBoardSquares[x][y-2].setBackground(Color.YELLOW);
+										chessBoardSquares[x][y-1].setBackground(Color.YELLOW);
+										chessBoardSquares[x][y].setBackground(Color.YELLOW);
+										chessBoardSquares[x][y+1].setBackground(Color.YELLOW);
+										break;
+									case 5:
+										chessBoardSquares[x][y-2].setBackground(Color.YELLOW);
+										chessBoardSquares[x][y-1].setBackground(Color.YELLOW);
+										chessBoardSquares[x][y].setBackground(Color.YELLOW);
+										chessBoardSquares[x][y+1].setBackground(Color.YELLOW);
+										chessBoardSquares[x][y+2].setBackground(Color.YELLOW);
+										break;
+							}
+							}catch(Exception ex){
+								System.out.println("out of range");
+							}
+							
+						}
 						}
 						if (c == MouseEvent.BUTTON3) {
 							if(ship_ver==1){
@@ -403,7 +504,7 @@ class Chessboard extends JPanel{// make chessboard
 										break;
 							}
 								ship_ver=0;
-							}else if(ship_ver == 0){
+							}else if(ship_ver == 0){ //Switch 
 								switch(ship_longth){
 									case 1:
 										chessBoardSquares[x][y].setBackground(Color.BLUE);
