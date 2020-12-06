@@ -16,9 +16,22 @@ public class UnitTestofServer {
 			System.out.println("Server lookup exception: " + e.getMessage());
         }
         
-        Player player = testLogin(o);
-        player = testJoin(o, player);
+        Player player = testLogin(o); // for login
+        player = testJoin(o, player); // for join
+
+        String state = new String(); // for get room state
+        try
+        {
+            state = o.getRoomState(player);
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        System.out.println("room state: " + state);
+
         
+    
     }
 
     // the function is to test RMI login 
