@@ -128,4 +128,25 @@ public class Client
 			return false;
 		}
 	}
+	public static boolean getroomstate()
+	{
+		try
+		{
+			String check_room = null;
+			check_room = o.getRoomState(player); // Let player join game(room)
+			if(check_room.compareTo("free")==0){
+				return false;
+			}else if(check_room.compareTo("playing")==0){
+				return true;
+			}
+			//System.out.println(player.name + " GGroomId is " + player.roomId);
+		}
+		catch(Exception e)
+		{
+			System.out.println("GameServer exception: " + e.getMessage());
+			e.printStackTrace();
+			return false;
+		}
+		return false;
+	}
 }
