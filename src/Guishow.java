@@ -576,7 +576,6 @@ class Chessboard extends JPanel{// make chessboard
 												}
 											}
 										}
-											
 										break;
 							}
 							}catch(Exception ex){
@@ -593,65 +592,158 @@ class Chessboard extends JPanel{// make chessboard
 						if (c == MouseEvent.BUTTON1){ //------deploy------
 							System.out.println("deploy!!!");
 							if(ship_ver == 0){
-							try{
-								switch(ship_longth){
-									case 1:
-										chessBoardSquares[x][y].setBackground(Color.YELLOW);
-										break;
-									case 2:
-										chessBoardSquares[x][y].setBackground(Color.YELLOW);
-										chessBoardSquares[x+1][y].setBackground(Color.YELLOW);
-										break;
-									case 3:
-										chessBoardSquares[x-1][y].setBackground(Color.YELLOW);
-										chessBoardSquares[x][y].setBackground(Color.YELLOW);
-										chessBoardSquares[x+1][y].setBackground(Color.YELLOW);
-										break;
-									case 4:
-										chessBoardSquares[x-2][y].setBackground(Color.YELLOW);
-										chessBoardSquares[x-1][y].setBackground(Color.YELLOW);
-										chessBoardSquares[x][y].setBackground(Color.YELLOW);
-										chessBoardSquares[x+1][y].setBackground(Color.YELLOW);
-										break;
-									case 5:
-										chessBoardSquares[x-2][y].setBackground(Color.YELLOW);
-										chessBoardSquares[x-1][y].setBackground(Color.YELLOW);
-										chessBoardSquares[x][y].setBackground(Color.YELLOW);
-										chessBoardSquares[x+1][y].setBackground(Color.YELLOW);
-										chessBoardSquares[x+2][y].setBackground(Color.YELLOW);
-										break;
+								try{
+									switch(ship_longth){
+										case 1:
+											if(chessBoardSquares[x][y].getBackground() != Color.YELLOW)
+											{
+												chessBoardSquares[x][y].setBackground(Color.YELLOW);
+											}
+											break;
+										case 2:
+											if(chessBoardSquares[x][y].getBackground() != Color.YELLOW)
+											{
+												if(chessBoardSquares[x+1][y].getBackground() != Color.YELLOW)
+												{
+													chessBoardSquares[x][y].setBackground(Color.YELLOW);
+													chessBoardSquares[x+1][y].setBackground(Color.YELLOW);
+												}
+											}
+											break;
+										case 3:
+											if(chessBoardSquares[x-1][y].getBackground() != Color.YELLOW)
+											{
+												if(chessBoardSquares[x][y].getBackground() != Color.YELLOW)
+												{
+													if(chessBoardSquares[x+1][y].getBackground() != Color.YELLOW)
+													{
+														chessBoardSquares[x-1][y].setBackground(Color.YELLOW);
+														chessBoardSquares[x][y].setBackground(Color.YELLOW);
+														chessBoardSquares[x+1][y].setBackground(Color.YELLOW);
+													}
+												}
+											}
+											break;
+										case 4:
+											if(chessBoardSquares[x-2][y].getBackground() != Color.YELLOW)
+											{
+												if(chessBoardSquares[x-1][y].getBackground() != Color.YELLOW)
+												{
+													if(chessBoardSquares[x][y].getBackground() != Color.YELLOW)
+													{
+														if(chessBoardSquares[x+1][y].getBackground() != Color.YELLOW)
+														{
+															chessBoardSquares[x-2][y].setBackground(Color.YELLOW);
+															chessBoardSquares[x-1][y].setBackground(Color.YELLOW);
+															chessBoardSquares[x][y].setBackground(Color.YELLOW);
+															chessBoardSquares[x+1][y].setBackground(Color.YELLOW);
+														}
+													}
+												}
+											}	
+											break;
+										case 5:
+											if(chessBoardSquares[x-2][y].getBackground() != Color.YELLOW)
+											{
+												if(chessBoardSquares[x-1][y].getBackground() != Color.YELLOW)
+												{
+													if(chessBoardSquares[x][y].getBackground() != Color.YELLOW)
+													{
+														if(chessBoardSquares[x+1][y].getBackground() != Color.YELLOW)
+														{
+															if(chessBoardSquares[x+2][y].getBackground() != Color.YELLOW)
+															{
+																chessBoardSquares[x-2][y].setBackground(Color.YELLOW);
+																chessBoardSquares[x-1][y].setBackground(Color.YELLOW);
+																chessBoardSquares[x][y].setBackground(Color.YELLOW);
+																chessBoardSquares[x+1][y].setBackground(Color.YELLOW);
+																chessBoardSquares[x+2][y].setBackground(Color.YELLOW);
+															}
+														}
+													}
+												}
+											}
+											break;
+									}
+								} catch (Exception ex){
+									System.out.println("out of range");
 								}
-							} catch (Exception ex){
-								System.out.println("out of range");
-							}
 							
 						}else if(ship_ver == 1){
 							try{
 								switch(ship_longth){
 									case 1:
-										chessBoardSquares[x][y].setBackground(Color.YELLOW);
+										if(chessBoardSquares[x][y].getBackground() != Color.YELLOW)
+										{
+											chessBoardSquares[x][y].setBackground(Color.YELLOW);
+										}
+											
 										break;
 									case 2:
-										chessBoardSquares[x][y].setBackground(Color.YELLOW);
-										chessBoardSquares[x][y+1].setBackground(Color.YELLOW);
+										if(chessBoardSquares[x][y].getBackground() != Color.YELLOW)
+										{
+											if(chessBoardSquares[x][y+1].getBackground() != Color.YELLOW)
+											{
+												chessBoardSquares[x][y].setBackground(Color.YELLOW);
+												chessBoardSquares[x][y+1].setBackground(Color.YELLOW);
+											}
+										}
+											
 										break;
 									case 3:
-										chessBoardSquares[x][y-1].setBackground(Color.YELLOW);
-										chessBoardSquares[x][y].setBackground(Color.YELLOW);
-										chessBoardSquares[x][y+1].setBackground(Color.YELLOW);
+										if(chessBoardSquares[x][y-1].getBackground() != Color.YELLOW)
+										{
+											if(chessBoardSquares[x][y].getBackground() != Color.YELLOW)
+											{
+												if(chessBoardSquares[x][y+1].getBackground() != Color.YELLOW)
+												{
+													chessBoardSquares[x][y-1].setBackground(Color.YELLOW);
+													chessBoardSquares[x][y].setBackground(Color.YELLOW);
+													chessBoardSquares[x][y+1].setBackground(Color.YELLOW);
+												}
+											}
+										}	
 										break;
 									case 4:
-										chessBoardSquares[x][y-2].setBackground(Color.YELLOW);
-										chessBoardSquares[x][y-1].setBackground(Color.YELLOW);
-										chessBoardSquares[x][y].setBackground(Color.YELLOW);
-										chessBoardSquares[x][y+1].setBackground(Color.YELLOW);
+										if(chessBoardSquares[x][y-2].getBackground() != Color.YELLOW)
+										{
+											if(chessBoardSquares[x][y-1].getBackground() != Color.YELLOW)
+											{
+												if(chessBoardSquares[x][y].getBackground() != Color.YELLOW)
+												{
+													if(chessBoardSquares[x][y+1].getBackground() != Color.YELLOW)
+													{
+														chessBoardSquares[x][y-2].setBackground(Color.YELLOW);
+														chessBoardSquares[x][y-1].setBackground(Color.YELLOW);
+														chessBoardSquares[x][y].setBackground(Color.YELLOW);
+														chessBoardSquares[x][y+1].setBackground(Color.YELLOW);
+													}
+												}
+											}
+										}
 										break;
 									case 5:
-										chessBoardSquares[x][y-2].setBackground(Color.YELLOW);
-										chessBoardSquares[x][y-1].setBackground(Color.YELLOW);
-										chessBoardSquares[x][y].setBackground(Color.YELLOW);
-										chessBoardSquares[x][y+1].setBackground(Color.YELLOW);
-										chessBoardSquares[x][y+2].setBackground(Color.YELLOW);
+										if(chessBoardSquares[x][y-2].getBackground() != Color.YELLOW)
+										{
+											if(chessBoardSquares[x][y-1].getBackground() != Color.YELLOW)
+											{
+												if(chessBoardSquares[x][y].getBackground() != Color.YELLOW)
+												{
+													if(chessBoardSquares[x][y+1].getBackground() != Color.YELLOW)
+													{
+														if(chessBoardSquares[x][y+2].getBackground() != Color.YELLOW)
+														{
+															//System.out.println("5-5");
+															chessBoardSquares[x][y-2].setBackground(Color.YELLOW);
+															chessBoardSquares[x][y-1].setBackground(Color.YELLOW);
+															chessBoardSquares[x][y].setBackground(Color.YELLOW);
+															chessBoardSquares[x][y+1].setBackground(Color.YELLOW);
+															chessBoardSquares[x][y+2].setBackground(Color.YELLOW);
+														}
+													}
+												}
+											}
+										}
 										break;
 							}
 							}catch(Exception ex){
@@ -659,67 +751,171 @@ class Chessboard extends JPanel{// make chessboard
 							}
 							
 						}
+						ship_longth=0;
 						}
 						if (c == MouseEvent.BUTTON3) {
-							if(ship_ver==1){
-								switch(ship_longth){
-									case 1:
-										chessBoardSquares[x][y].setBackground(Color.BLUE);
-										break;
-									case 2:
-										chessBoardSquares[x][y].setBackground(Color.BLUE);
-										chessBoardSquares[x][y+1].setBackground(Color.BLUE);
-										break;
-									case 3:
-										chessBoardSquares[x][y-1].setBackground(Color.BLUE);
-										chessBoardSquares[x][y].setBackground(Color.BLUE);
-										chessBoardSquares[x][y+1].setBackground(Color.BLUE);
-										break;
-									case 4:
-										chessBoardSquares[x][y-2].setBackground(Color.BLUE);
-										chessBoardSquares[x][y-1].setBackground(Color.BLUE);
-										chessBoardSquares[x][y].setBackground(Color.BLUE);
-										chessBoardSquares[x][y+1].setBackground(Color.BLUE);
-										break;
-									case 5:
-										chessBoardSquares[x][y-2].setBackground(Color.BLUE);
-										chessBoardSquares[x][y-1].setBackground(Color.BLUE);
-										chessBoardSquares[x][y].setBackground(Color.BLUE);
-										chessBoardSquares[x][y+1].setBackground(Color.BLUE);
-										chessBoardSquares[x][y+2].setBackground(Color.BLUE);
-										break;
-							}
-								ship_ver=0;
-							}else if(ship_ver == 0){ //Switch 
-								switch(ship_longth){
-									case 1:
-										chessBoardSquares[x][y].setBackground(Color.BLUE);
-										break;
-									case 2:
-										chessBoardSquares[x][y].setBackground(Color.BLUE);
-										chessBoardSquares[x+1][y].setBackground(Color.BLUE);
-										break;
-									case 3:
-										chessBoardSquares[x-1][y].setBackground(Color.BLUE);
-										chessBoardSquares[x][y].setBackground(Color.BLUE);
-										chessBoardSquares[x+1][y].setBackground(Color.BLUE);
-										break;
-									case 4:
-										chessBoardSquares[x-2][y].setBackground(Color.BLUE);
-										chessBoardSquares[x-1][y].setBackground(Color.BLUE);
-										chessBoardSquares[x][y].setBackground(Color.BLUE);
-										chessBoardSquares[x+1][y].setBackground(Color.BLUE);
-										break;
-									case 5:
-										chessBoardSquares[x-2][y].setBackground(Color.BLUE);
-										chessBoardSquares[x-1][y].setBackground(Color.BLUE);
-										chessBoardSquares[x][y].setBackground(Color.BLUE);
-										chessBoardSquares[x+1][y].setBackground(Color.BLUE);
-										chessBoardSquares[x+2][y].setBackground(Color.BLUE);
-										break;
-								}
+							if(ship_ver == 0){
 								ship_ver=1;
+								try{
+									switch(ship_longth){
+										case 1:
+											if(chessBoardSquares[x][y].getBackground() != Color.YELLOW)
+											{
+												chessBoardSquares[x][y].setBackground(Color.BLUE);
+											}
+											break;
+										case 2:
+											if(chessBoardSquares[x][y].getBackground() != Color.YELLOW)
+											{
+												if(chessBoardSquares[x+1][y].getBackground() != Color.YELLOW)
+												{
+													chessBoardSquares[x][y].setBackground(Color.BLUE);
+													chessBoardSquares[x+1][y].setBackground(Color.BLUE);
+												}
+											}
+											break;
+										case 3:
+											if(chessBoardSquares[x-1][y].getBackground() != Color.YELLOW)
+											{
+												if(chessBoardSquares[x][y].getBackground() != Color.YELLOW)
+												{
+													if(chessBoardSquares[x+1][y].getBackground() != Color.YELLOW)
+													{
+														chessBoardSquares[x-1][y].setBackground(Color.BLUE);
+														chessBoardSquares[x][y].setBackground(Color.BLUE);
+														chessBoardSquares[x+1][y].setBackground(Color.BLUE);
+													}
+												}
+											}
+											break;
+										case 4:
+											if(chessBoardSquares[x-2][y].getBackground() != Color.YELLOW)
+											{
+												if(chessBoardSquares[x-1][y].getBackground() != Color.YELLOW)
+												{
+													if(chessBoardSquares[x][y].getBackground() != Color.YELLOW)
+													{
+														if(chessBoardSquares[x+1][y].getBackground() != Color.YELLOW)
+														{
+															chessBoardSquares[x-2][y].setBackground(Color.BLUE);
+															chessBoardSquares[x-1][y].setBackground(Color.BLUE);
+															chessBoardSquares[x][y].setBackground(Color.BLUE);
+															chessBoardSquares[x+1][y].setBackground(Color.BLUE);
+														}
+													}
+												}
+											}	
+											break;
+										case 5:
+											if(chessBoardSquares[x-2][y].getBackground() != Color.YELLOW)
+											{
+												if(chessBoardSquares[x-1][y].getBackground() != Color.YELLOW)
+												{
+													if(chessBoardSquares[x][y].getBackground() != Color.YELLOW)
+													{
+														if(chessBoardSquares[x+1][y].getBackground() != Color.YELLOW)
+														{
+															if(chessBoardSquares[x+2][y].getBackground() != Color.YELLOW)
+															{
+																chessBoardSquares[x-2][y].setBackground(Color.BLUE);
+																chessBoardSquares[x-1][y].setBackground(Color.BLUE);
+																chessBoardSquares[x][y].setBackground(Color.BLUE);
+																chessBoardSquares[x+1][y].setBackground(Color.BLUE);
+																chessBoardSquares[x+2][y].setBackground(Color.BLUE);
+															}
+														}
+													}
+												}
+											}
+											break;
+									}
+								} catch (Exception ex){
+									System.out.println("out of range");
+								}
+							
+						}else if(ship_ver == 1){
+							ship_ver = 0;
+							try{
+								switch(ship_longth){
+									case 1:
+										if(chessBoardSquares[x][y].getBackground() != Color.YELLOW)
+										{
+											chessBoardSquares[x][y].setBackground(Color.BLUE);
+										}
+											
+										break;
+									case 2:
+										if(chessBoardSquares[x][y].getBackground() != Color.YELLOW)
+										{
+											if(chessBoardSquares[x][y+1].getBackground() != Color.YELLOW)
+											{
+												chessBoardSquares[x][y].setBackground(Color.BLUE);
+												chessBoardSquares[x][y+1].setBackground(Color.BLUE);
+											}
+										}
+											
+										break;
+									case 3:
+										if(chessBoardSquares[x][y-1].getBackground() != Color.YELLOW)
+										{
+											if(chessBoardSquares[x][y].getBackground() != Color.YELLOW)
+											{
+												if(chessBoardSquares[x][y+1].getBackground() != Color.YELLOW)
+												{
+													chessBoardSquares[x][y-1].setBackground(Color.BLUE);
+													chessBoardSquares[x][y].setBackground(Color.BLUE);
+													chessBoardSquares[x][y+1].setBackground(Color.BLUE);
+												}
+											}
+										}	
+										break;
+									case 4:
+										if(chessBoardSquares[x][y-2].getBackground() != Color.YELLOW)
+										{
+											if(chessBoardSquares[x][y-1].getBackground() != Color.YELLOW)
+											{
+												if(chessBoardSquares[x][y].getBackground() != Color.YELLOW)
+												{
+													if(chessBoardSquares[x][y+1].getBackground() != Color.YELLOW)
+													{
+														chessBoardSquares[x][y-2].setBackground(Color.BLUE);
+														chessBoardSquares[x][y-1].setBackground(Color.BLUE);
+														chessBoardSquares[x][y].setBackground(Color.BLUE);
+														chessBoardSquares[x][y+1].setBackground(Color.BLUE);
+													}
+												}
+											}
+										}
+										break;
+									case 5:
+										if(chessBoardSquares[x][y-2].getBackground() != Color.YELLOW)
+										{
+											if(chessBoardSquares[x][y-1].getBackground() != Color.YELLOW)
+											{
+												if(chessBoardSquares[x][y].getBackground() != Color.YELLOW)
+												{
+													if(chessBoardSquares[x][y+1].getBackground() != Color.YELLOW)
+													{
+														if(chessBoardSquares[x][y+2].getBackground() != Color.YELLOW)
+														{
+															//System.out.println("5-5");
+															chessBoardSquares[x][y-2].setBackground(Color.BLUE);
+															chessBoardSquares[x][y-1].setBackground(Color.BLUE);
+															chessBoardSquares[x][y].setBackground(Color.BLUE);
+															chessBoardSquares[x][y+1].setBackground(Color.BLUE);
+															chessBoardSquares[x][y+2].setBackground(Color.BLUE);
+														}
+													}
+												}
+											}
+										}
+										break;
 							}
+							}catch(Exception ex){
+								System.out.println("out of range");
+							}
+							
+						}
 							System.out.println("switch!!!");
 						}
 					}
