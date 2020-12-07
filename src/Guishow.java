@@ -70,7 +70,7 @@ public class Guishow{
 							{
 								while(true){
 									System.out.println("w");
-									if(client.player.roomId != -1){
+									if(client.getroomstate()!= false){
 										update();
 										System.out.println("done");
 										break;
