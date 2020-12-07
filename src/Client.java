@@ -26,7 +26,7 @@ public class Client
 	}
 	public static void main(String args[]) // test only
 	{
-	    
+	
 		
 		String c = null;
 		int h=0;
@@ -148,5 +148,37 @@ public class Client
 			return false;
 		}
 		return false;
+	}
+	public static boolean setbattleship()
+	{
+		try
+		{
+			String check_map = null;
+			check_map = o.setPlayerMap(player); // Let player join game(room)
+			if(check_map.compareTo("fail")==0){
+				return false;
+			}else if(check_map.compareTo("success")==0){
+				return true;
+			}
+			//System.out.println(player.name + " GGroomId is " + player.roomId);
+		}
+		catch(Exception e)
+		{
+			System.out.println("GameServer exception: " + e.getMessage());
+			e.printStackTrace();
+			return false;
+		}
+		return false;
+	}
+	public static void playing()
+	{
+		System.out.println("yaho!!");
+		/*Runnable rr = new Runnable() {
+				@Override
+				public void run(){
+					System.out.println("yaho!!");
+				}
+				};
+		rr.start();*/
 	}
 }
