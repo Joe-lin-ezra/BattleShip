@@ -13,6 +13,7 @@ public interface GameFrame extends Remote
 	public String getRoomState(Player player) throws java.rmi.RemoteException;
 	// to set player map in server
 	public String setPlayerMap(Player player) throws java.rmi.RemoteException; 
+	public String whoseTerm(Player player) throws java.rmi.RemoteException;
 	public boolean isWin(Player player) throws java.rmi.RemoteException;
 	public String attack(Player player, Location location) throws java.rmi.RemoteException;
 	public Player getSelfState(Player player) throws java.rmi.RemoteException;

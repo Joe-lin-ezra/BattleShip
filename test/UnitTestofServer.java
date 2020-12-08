@@ -48,6 +48,16 @@ public class UnitTestofServer {
         
         try
         {
+            String str = o.whoseTerm(player);
+            System.out.println("whose term: " + str + ".....");
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        try
+        {
             String str = o.attack(player, new Location(1, 1));
             System.out.println(str);
         }
@@ -56,6 +66,15 @@ public class UnitTestofServer {
             e.printStackTrace();
         }
 
+        try
+        {
+            String str = o.whoseTerm(player);
+            System.out.println("whose term: " + str + ".....");
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
     // the function is to test RMI login 

@@ -86,11 +86,14 @@ public class GameRMIImpl extends UnicastRemoteObject implements GameFrame
 		if((roomId = isRoomFree()) != -1)
 		{
 			Room room = rooms.get(roomId);
-			//System.out.println("player " + player.name + " is join " + room.id);// debug
 			room.joinRoom(player);
 			room.state = "playing";
-			//System.out.println(" room " + room.id + " state is " + room.state); // debug
 			rooms.put(roomId, room);
+			
+			// decide the order of attack
+			Random random = new Random();
+			int prior = random.nextInt(2);
+			room.term = String.valueOf(room.players.get(prior).id);
 		}
 		else
 		{
@@ -103,9 +106,7 @@ public class GameRMIImpl extends UnicastRemoteObject implements GameFrame
 
 			// put the player into the new room
 			Room room = new Room(key);
-			//System.out.println("make a new room id: " + room.id); // debug
 			room.joinRoom(player);
-			//System.out.println("player " + player.name + " is room " + room.id  +" owner "); //debug
 			
 			// put the new room into rooms list
 			rooms.put(key, room);
@@ -125,6 +126,12 @@ public class GameRMIImpl extends UnicastRemoteObject implements GameFrame
 		return room.getState();
 	}
 
+	// this term is whose
+	public String whoseTerm(Player player) 
+	{
+		Room room = rooms.get(player.roomId);
+		return room.term;
+	}
 	/* to set the player map, and return string
 	// "success" or "fail"
 	*/
@@ -168,7 +175,10 @@ public class GameRMIImpl extends UnicastRemoteObject implements GameFrame
 	{
 		Room room = rooms.get(player.roomId);
 		Player opponent = null;
-
+		if(!room.term.equals(String.valueOf(player.id)))
+		{
+			return "fail";
+		}
 		// find another player
 		for(Player another: room.players)
 		{
@@ -184,12 +194,19 @@ public class GameRMIImpl extends UnicastRemoteObject implements GameFrame
 			{
 				opponent.shipLocation.remove(l);
 				printState();
+				nextTerm(room, opponent);
 				return "success";
 			}
 		}
 		printState();
+		nextTerm(room, opponent);
 		return "fail";
 	}
+	private void nextTerm(Room room, Player opponent)
+	{
+		room.term = String.valueOf(opponent.id);
+	}
+
 
 	public Player getSelfState(Player player) throws java.rmi.RemoteException
 	{
