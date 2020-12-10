@@ -1,10 +1,11 @@
 import java.io.*;
 import java.rmi.*;
 import java.util.*;
+import java.lang.*;
+
 
 public class UnitTestofServer {
     public static void main(String[] args) {
-        
         GameFrame o = null;
 		try
 		{
@@ -58,6 +59,7 @@ public class UnitTestofServer {
 
         try
         {
+            Thread.sleep(6000);
             String str = o.attack(player, new Location(1, 1));
             System.out.println(str);
         }

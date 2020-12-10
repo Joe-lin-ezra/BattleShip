@@ -29,17 +29,29 @@ public class GameRMIImpl extends UnicastRemoteObject implements GameFrame
 			Room room = rooms.get(i);
 			System.out.println("\tRoom id: " + room.id);
 			System.out.println("\tRoom state: " + room.state);
+			System.out.println("\tRoom winner: " + room.winner);
 			System.out.println("\tRoom player number:" + room.players.size());
 			for(Player player: room.players)
 			{
 				System.out.println("\t      * player id: " + player.id);
 				System.out.println("\t\tplayer name: " + player.name);
-				System.out.println("\t\tplayer ship Location: ");
 				
+				System.out.println("\t\tplayer ship Location: ");
 				if(player.shipLocation != null)
 				{
 					System.out.print("\t\t\t");
 					for(Location position: player.shipLocation)
+					{	
+						System.out.print("(" + position.x + ", " + position.y + "), ");
+					}
+					System.out.println();
+				}
+
+				System.out.println("\t\tplayer attacked Location: ");
+				if(player.attackedLocation != null)
+				{
+					System.out.print("\t\t\t");
+					for(Location position: player.attackedLocation)
 					{	
 						System.out.print("(" + position.x + ", " + position.y + "), ");
 					}
@@ -153,32 +165,24 @@ public class GameRMIImpl extends UnicastRemoteObject implements GameFrame
 		return "fail";
 	}
 
-	// check whether i win this game 
-	public boolean isWin(Player player) throws java.rmi.RemoteException
+	public String getWinner(Player player) throws java.rmi.RemoteException
 	{
 		Room room = rooms.get(player.roomId);
-		// find another player
-		for(Player another: room.players)
-		{
-			if(another.id != player.id)
-			{
-				if(another.shipLocation.size() == 0)
-				{
-					return true;
-				}
-			}
-		}
-		return false;
+		return room.winner;
 	}
+	
 	// player go attack his/her opponent
 	public String attack(Player player, Location location) throws java.rmi.RemoteException
 	{
 		Room room = rooms.get(player.roomId);
 		Player opponent = null;
+
+		// not the term belong the player
 		if(!room.term.equals(String.valueOf(player.id)))
 		{
 			return "fail";
 		}
+
 		// find another player
 		for(Player another: room.players)
 		{
@@ -187,9 +191,12 @@ public class GameRMIImpl extends UnicastRemoteObject implements GameFrame
 				opponent = another;
 			}
 		}
-		System.out.println(location.x + ", " + location.y + ", " + location + ", "+ opponent.shipLocation.get(1));
+		// put attacked location in to "attackedLocation" list
+		opponent.attackedLocation.add(location);
+
 		for(Location l: opponent.shipLocation)
 		{
+			// check the ship location and attacked location
 			if((l.x == location.x) && (l.y == location.y))
 			{
 				opponent.shipLocation.remove(l);
@@ -205,6 +212,23 @@ public class GameRMIImpl extends UnicastRemoteObject implements GameFrame
 	private void nextTerm(Room room, Player opponent)
 	{
 		room.term = String.valueOf(opponent.id);
+	}
+	// set the winner in specific room
+	private void setWinner(Player player) throws java.rmi.RemoteException
+	{
+		Room room = rooms.get(player.roomId);
+		// find another player
+		Player first = room.players.get(0);
+		Player second = room.players.get(1);
+
+		if(first.shipLocation.size() == 0)
+		{
+			room.winner = String.valueOf(second.id);
+		}
+		if(second.shipLocation.size() == 0)
+		{
+			room.winner = String.valueOf(first.id);
+		}
 	}
 
 

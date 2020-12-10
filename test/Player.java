@@ -7,4 +7,5 @@ public class Player implements Serializable
     String name;
     int roomId;
     List<Location> shipLocation = new ArrayList<Location>();
+    List<Location> attackedLocation = new ArrayList<Location>();
 }
