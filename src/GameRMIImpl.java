@@ -200,12 +200,14 @@ public class GameRMIImpl extends UnicastRemoteObject implements GameFrame
 			if((l.x == location.x) && (l.y == location.y))
 			{
 				opponent.shipLocation.remove(l);
+				setWinner(player);
 				printState();
 				nextTerm(room, opponent);
 				return "success";
 			}
 		}
 		printState();
+		setWinner(player);
 		nextTerm(room, opponent);
 		return "fail";
 	}
