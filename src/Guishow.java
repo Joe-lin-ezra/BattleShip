@@ -29,6 +29,7 @@ public class Guishow{
 	private final JLabel message = new JLabel("Warship battle!!!!!");
 	private boolean check_login = false;
 	private boolean check_join = false;
+	static boolean play = false;
 	//define deploy button
 	private JButton aircraft_carrier = new JButton("BBV"); //Shorthand
 	private JButton battleship = new JButton("BB");
@@ -37,10 +38,12 @@ public class Guishow{
 	private JButton submarine = new JButton("SS");
 	private JButton deployyy = new JButton("Deploy");
 	private JButton attack = new JButton("Attack");
-	private Runnable rr;
+	//private Runnable rr;
 	//FlowLayout layout = new FlowLayout(FlowLayout.CENTER, 0, 0); 
 	int i,j;
+	
 	public ArrayList<Location> location = new ArrayList<Location>(); // changing "Locate" to "Location"
+	public Location locat = null;
 	Guishow(){
 		client = new Client();
 		welcomepage();
@@ -57,6 +60,7 @@ public class Guishow{
 		//f.repaint();
 		f.setVisible(true);
 	}
+	
 	public final void welcomepage(){
 		guia.setBorder(new EmptyBorder(5, 5, 5, 5)); // make border style
 		nickname = new JTextField(20);
@@ -124,6 +128,7 @@ public class Guishow{
 		ground.add(submarine); //SS
 		ground.add(deployyy);// deploy 
 		ground.add(attack);
+		attack.setEnabled(!attack.isEnabled());
 		guic.add(ground,BorderLayout.SOUTH);
 		/*ActionListener deployee = new ActionListener(){
 			public void actionPerformed(ActionEvent e){
@@ -135,33 +140,47 @@ public class Guishow{
 			public void actionPerformed(ActionEvent e) {
                         if(e.getActionCommand() == "BBV"){
 							System.out.println("BBV");
-							chessBoardz.setship_longth(5);  //
-							System.out.println("5. is "+chessBoardz.getship_longth());
-							aircraft_carrier.setEnabled(!aircraft_carrier.isEnabled());
+							//System.out.println("5. is "+chessBoardz.getship_longth());
+							if(chessBoardz.getship_longth()==0){
+								chessBoardz.setship_longth(5);
+								aircraft_carrier.setEnabled(!aircraft_carrier.isEnabled());
+							}
+							
 							//chessBoardy.ship_longth=5;
 						}else if(e.getActionCommand() == "BB"){
 							System.out.println("BB");
-							chessBoardz.ship_longth=4;
-							System.out.println("4. is "+chessBoardz.getship_longth());
-							battleship.setEnabled(!battleship.isEnabled());
+							if(chessBoardz.getship_longth()==0){
+								chessBoardz.ship_longth=4;
+								//System.out.println("4. is "+chessBoardz.getship_longth());
+								battleship.setEnabled(!battleship.isEnabled());
+							}
+							
 							//chessBoardy.ship_longth=4;
 						}else if(e.getActionCommand() == "CL"){
 							System.out.println("CL");
-							chessBoardz.ship_longth=3;
-							System.out.println("3. is "+chessBoardz.getship_longth());
-							cruiser.setEnabled(!cruiser.isEnabled());
+							if(chessBoardz.getship_longth()==0){
+								chessBoardz.ship_longth=3;
+								//System.out.println("3. is "+chessBoardz.getship_longth());
+								cruiser.setEnabled(!cruiser.isEnabled());
+							}
+							
 							//chessBoardy.ship_longth=3;
 						}else if(e.getActionCommand() == "DD"){
 							System.out.println("DD");
-							chessBoardz.ship_longth=2;
-							System.out.println("2. is "+chessBoardz.getship_longth());
-							destroyer.setEnabled(!destroyer.isEnabled());
+							if(chessBoardz.getship_longth()==0){
+								chessBoardz.ship_longth=2;
+								//System.out.println("2. is "+chessBoardz.getship_longth());
+								destroyer.setEnabled(!destroyer.isEnabled());
+							}
+							
 							//chessBoardy.ship_longth=2;
 						}else if(e.getActionCommand() == "SS"){
 							System.out.println("SS");
-							chessBoardz.ship_longth=1;
-							System.out.println("1. is "+chessBoardz.getship_longth());
-							submarine.setEnabled(!submarine.isEnabled());
+							if(chessBoardz.getship_longth()==0){
+								chessBoardz.ship_longth=1;
+								//System.out.println("1. is "+chessBoardz.getship_longth());
+								submarine.setEnabled(!submarine.isEnabled());
+							}
 							//chessBoardy.ship_longth=1;
 						}else if(e.getActionCommand() == "Deploy"){
 							//System.out.println("eee");
@@ -176,16 +195,43 @@ public class Guishow{
 									}
 								}
 							}
-							
-							client.player.shipLocation = location;
-							//chessBoardz.closeChessboard();
-							if(client.setbattleship() == false){
-								System.out.println("error!!");
+							if(location.size() < 15){  //duplicate deploy
+								System.out.println("error");
+							}else{
+								client.player.shipLocation = location;
+								chessBoardz.closeChessboard();
+								if(client.setbattleship() == false){ //set locate
+									System.out.println("error!!");
+								}
+								play = true;
+								playing();
+								deployyy.setEnabled(!deployyy.isEnabled());
 							}
-							client.playing();
 						}else if(e.getActionCommand() == "Attack"){
 							System.out.println("Attack");
-							//chessBoarde.ship_longth=1;
+							for (i = 0; i < 10; i++) {
+								for (j = 0; j < 10; j++) {
+									//chessBoardz.chessBoardSquares[i][j](!chessBoardz.chessBoardSquares[i][j].isEnabled());
+									if(chessBoarde.getChessButton(i,j).getBackground()==Color.red)
+									{
+										locat = new Location(i,j);
+										chessBoarde.setChessButtoncolor(i,j,Color.yellow);
+										System.out.println("(" + i + "," + j + ") is red");
+										break;
+									}
+								}
+							}
+							if(locat!=null){
+								if(client.attack(locat)==true){
+								System.out.println("sucess!!");
+								}else{
+									System.out.println("fail");
+								}
+								locat=null;
+								attack.setEnabled(!attack.isEnabled());
+								playing();
+							}
+							
 						}
 				//System.out.println("get!! x is " + x + " y is " + y + "t is " + t);
             }
@@ -204,7 +250,43 @@ public class Guishow{
         return gui;
     }*/
 	public void playing(){
-		System.out.println("AAAAAAAAAAAAAAAA");
+		/*Runnable rr = new Runnable() {
+				public void run(){
+					System.out.println("aloha!!");
+					do{
+						if(client.playing()==true){
+							attack.setEnabled(attack.isEnabled());
+							break;
+						}
+						else{
+							try
+							{
+								Thread.sleep(2000);
+							}
+							catch(InterruptedException e) { }
+						}
+					}while(true);
+				}
+				};
+		rr.run();*/
+		//System.out.println("aloha!!");
+		do{
+			if(client.playing()==true){
+				attack.setEnabled(!attack.isEnabled());
+				chessBoarde.ship_longth=1;
+				break;
+			}
+			else
+			{
+				try
+				{
+					Thread.sleep(2000);
+				}
+				catch(InterruptedException e) { }
+			}
+		}while(true);
+		
+		//System.out.println("AAAAAAAAAAAAAAAA");
 	}
 	public final JComponent getGuia() {
         return guia;
@@ -213,6 +295,9 @@ public class Guishow{
 	public static void main(String args[]){
 		System.out.println("Hello Gui!!");
 		Guishow guib = new Guishow();
+		
+		//System.out.println(rr.isAlive());
+		//rr.run();
 		Runnable r = new Runnable() {
 			@Override
 			public void run(){
@@ -227,7 +312,39 @@ public class Guishow{
 				f.setResizable(false);
 				//System.out.println("yaho!!");
 			}
-		}; 
+		};
+		Runnable rr = new Runnable() {
+				public void run(){
+					System.out.println("aloha!!");
+					if(play == true){
+						guib.playing();
+						/*do{
+						if(client.playing()==true){
+							attack.setEnabled(attack.isEnabled());
+							break;
+						}
+						else{
+							try
+							{
+								Thread.sleep(2000);
+							}
+							catch(InterruptedException e) { }
+						}
+						}while(true);*/
+					}else{
+						System.out.println("not ready!!");
+						try
+						{
+							wait();
+						}catch(Exception e){}
+						
+					}
+					
+				}
+				};
+		rr.run();
+		//r.run();
+		//guib.playing();
 		//System.out.println("yaho!!");
 		/*Runnable rr = new Runnable() {
 				@Override
@@ -266,16 +383,25 @@ class Chessboard extends JPanel{// make chessboard
 		//System.out.println("return chessboard");
         return chessBoardSquares[x][y];
     }
-	/*public void closeChessboard(){
+	public void setChessButtoncolor(int x,int y,Color color) {  // return 
+		System.out.println("yee");
+		chessBoardSquares[x][y].setBackground(color);
+        //switchstate(x,y,color,1);
+    }
+	public void closeChessboard(){
 		for(i = 0; i < chessBoardSquares.length; i++){ 
 			for(j = 0; j < chessBoardSquares[i].length ; j++){
-				chessBoardSquares[i][j](!chessBoardSquares[i][j].isEnabled());
+				chessBoardSquares[i][j].setEnabled(!chessBoardSquares[i][j].isEnabled());
 			}
 		}
-	}*/
+	}
+	
 	public void switchstate(int x,int y,Color color,int mode){
 		if(this.ship_ver == 0){
-			//System.out.println("0. ship_ver is " + this.ship_ver);
+			/*if(a =='e'){
+				System.out.println("0. ship_ver is " + this.ship_ver);
+			}*/
+			
 			if(mode==2){
 				//System.out.println("ship_ver is " + this.ship_ver);
 				this.ship_ver=1;
@@ -520,7 +646,12 @@ class Chessboard extends JPanel{// make chessboard
 						int c = e.getButton();
 						if (c == MouseEvent.BUTTON1){ //------deploy------
 							System.out.println("deploy!!!");
-							switchstate(x,y,Color.YELLOW,1);
+							if(a == 'e'){
+								switchstate(x,y,Color.red,1);
+							}else{
+								switchstate(x,y,Color.YELLOW,1);
+							}
+							
 						}
 						if (c == MouseEvent.BUTTON3) {
 							switchstate(x,y,Color.BLUE,2);
