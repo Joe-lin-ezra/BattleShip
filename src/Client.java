@@ -170,15 +170,48 @@ public class Client
 		}
 		return false;
 	}
-	public static void playing()
+	public static boolean playing()
 	{
-		System.out.println("yaho!!");
-		/*Runnable rr = new Runnable() {
-				@Override
-				public void run(){
-					System.out.println("yaho!!");
-				}
-				};
-		rr.start();*/
+		String term = null;
+		//System.out.println("yaho!!");
+		//1. get order
+		try
+		{
+			term = o.whoseTerm(player);
+		}
+		catch(Exception e)
+		{
+			term="0";
+			System.out.println("GameServer exception: " + e.getMessage());
+			e.printStackTrace();
+		}
+		
+		if(term.compareTo(String.valueOf(player.id)) == 0){
+			System.out.println("now is your term !!!");
+			return true;
+		}else{
+			System.out.println("emery term !!!");
+			return false;
+		}
+		
+		//o.getSelfState();
+		//2. get attack()
+		//3.
+	}
+	public static boolean attack(Location loc)
+	{
+		String state = null;
+		try
+		{
+			state = o.attack(player,loc);
+			System.out.println(state);
+			return true;
+		}
+		catch(Exception e)
+		{
+			System.out.println("GameServer exception: " + e.getMessage());
+			e.printStackTrace();
+		}
+		return false;
 	}
 }
