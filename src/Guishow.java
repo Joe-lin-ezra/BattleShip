@@ -49,7 +49,7 @@ public class Guishow{
 		welcomepage();
 		//initializeGui();
 	}
-	private void update(){
+	private void updated(){
 		f.remove(guia);
 		//f.setVisible(false);
 		f.setSize(800,400);
@@ -65,20 +65,17 @@ public class Guishow{
 		guia.setBorder(new EmptyBorder(5, 5, 5, 5)); // make border style
 		nickname = new JTextField(20);
 		//gui.setLayout(layout);
-		ActionListener buttonListener = new ActionListener() {
+		
+		ActionListener buttonListener = new ActionListener() {/*--------------------------here been change make a new class to cover it---------------------------*/
                     public void actionPerformed(ActionEvent e) {
-                        check_login = client.login(nickname.getText()); // call function login by RMI
-						//conb.setText("waiting");
-						if(check_login == true){
-							System.out.println("login"); // use to debug
-							//check_join = client.join(); // call function join by RMI
-							if(client.join()==true)
-							{
-								conb.setEnabled(!conb.isEnabled());
+						new Thread(new Runnable(){
+							@Override
+							public void run(){
+								client.join();
 								while(true){
 									//System.out.println("w");
 									if(client.getroomstate()!= false){ // room is created
-										update();
+										updated();
 										System.out.println("done");
 										break;
 									}else{ // waiting another player
@@ -86,10 +83,13 @@ public class Guishow{
 									}
 									
 								}
+								
 							}
-						}
+						}).start();
+						
 					}
 		};
+		
 		conb.addActionListener(buttonListener);
 		title.add(message);
 		guia.add(title,BorderLayout.NORTH);
@@ -313,46 +313,6 @@ public class Guishow{
 				//System.out.println("yaho!!");
 			}
 		};
-		Runnable rr = new Runnable() {
-				public void run(){
-					System.out.println("aloha!!");
-					if(play == true){
-						guib.playing();
-						/*do{
-						if(client.playing()==true){
-							attack.setEnabled(attack.isEnabled());
-							break;
-						}
-						else{
-							try
-							{
-								Thread.sleep(2000);
-							}
-							catch(InterruptedException e) { }
-						}
-						}while(true);*/
-					}else{
-						System.out.println("not ready!!");
-						try
-						{
-							wait();
-						}catch(Exception e){}
-						
-					}
-					
-				}
-				};
-		rr.run();
-		//r.run();
-		//guib.playing();
-		//System.out.println("yaho!!");
-		/*Runnable rr = new Runnable() {
-				@Override
-				public void run(){
-					guib.playing();
-					System.out.println("yaho!!");
-				}
-				}; */
 		SwingUtilities.invokeLater(r);
 	}
 }
