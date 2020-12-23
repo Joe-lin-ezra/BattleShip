@@ -9,18 +9,19 @@ public class GameRMIImpl extends UnicastRemoteObject implements GameFrame
 	Map<Integer, Room> rooms = new HashMap<Integer, Room>();
 	Random random = new Random();
 
-	Daemon thread = new Daemon(rooms);
+	Daemon thread = null;
 
 	
 	public GameRMIImpl() throws java.rmi.RemoteException
 	{
 		super(); 	// Use constructor of parent class
+		thread = new Daemon(rooms, this);
 		thread.start();
 		System.out.println("create new GameRMIImpl");
 	}
 
 	// to print the server state in that time
-	private void printState()
+	public void printState()
 	{
 		System.out.println("================       status begin       ========================");
 		System.out.println("client counter: " + counter);
@@ -263,14 +264,20 @@ public class GameRMIImpl extends UnicastRemoteObject implements GameFrame
 	}
 }
 
-// for checking client alive and dealing client in error
+
+// ---------------------------------------------------------------------------------------
+
+
 class Daemon extends Thread 
 {
 	Map<Integer, Room> rooms = null;
+	GameRMIImpl test = null;
 
-	public Daemon(Map<Integer, Room> r) 
+	public Daemon(Map<Integer, Room> r, GameRMIImpl k) 
 	{
 		this.rooms = r;
+		this.test = k;
+		System.out.println("second thread start");
 	}
 
 	public void run() 
@@ -281,15 +288,17 @@ class Daemon extends Thread
 			{
 				// just wait
 				Thread.sleep(5000);
-
+				this.test.printState();
+				
 				// remove the end-game room
 				removeEndRoom();
-
+				this.test.printState();
 				// dealing the player in error
 				dealErrorPlayer();
-				
+				this.test.printState();
 				// renew the alive state of all players
 				cancelAliveState();
+				this.test.printState();
 			}
 			catch(Exception e)
 			{
