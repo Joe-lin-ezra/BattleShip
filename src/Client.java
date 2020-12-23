@@ -214,4 +214,22 @@ public class Client
 		}
 		return false;
 	}
+	public static void getSelfState(){
+		try
+		{
+			o.getSelfState(player);
+			if(player.attackedLocation.isEmpty()){
+				System.out.println("attackedLocation isEmpty");
+			}
+			for(Location i: player.attackedLocation)
+			{
+				System.out.println("i is " + i);
+			}
+		}
+		catch(Exception e)
+		{
+			System.out.println("GameServer exception: " + e.getMessage());
+			e.printStackTrace();
+		}
+	}
 }
