@@ -3,17 +3,19 @@ import java.rmi.server.*;
 import java.util.*;
 import java.lang.*;
 
-
 public class GameRMIImpl extends UnicastRemoteObject implements GameFrame
 {
 	int counter = 0; // for user index
 	Map<Integer, Room> rooms = new HashMap<Integer, Room>();
-	
 	Random random = new Random();
 
+	Daemon thread = new Daemon(rooms);
+
+	
 	public GameRMIImpl() throws java.rmi.RemoteException
 	{
 		super(); 	// Use constructor of parent class
+		thread.start();
 		System.out.println("create new GameRMIImpl");
 	}
 
@@ -35,7 +37,7 @@ public class GameRMIImpl extends UnicastRemoteObject implements GameFrame
 			{
 				System.out.println("\t      * player id: " + player.id);
 				System.out.println("\t\tplayer name: " + player.name);
-				
+				System.out.println("\t\tplayer is alive?: " + player.alive);
 				System.out.println("\t\tplayer ship Location: ");
 				if(player.shipLocation != null)
 				{
@@ -77,7 +79,6 @@ public class GameRMIImpl extends UnicastRemoteObject implements GameFrame
 	{
 		if(rooms.isEmpty()) 
 		{
-			//System.out.println("rooms is empty!!!"); // debug
 			return -1;
 		}
 		
@@ -85,7 +86,6 @@ public class GameRMIImpl extends UnicastRemoteObject implements GameFrame
 		{
 			if(room.isAvailableJoin())
 			{
-				//System.out.println("rooms Id is " + room.id); // debug
 				return room.id;
 			}
 		}
@@ -225,15 +225,17 @@ public class GameRMIImpl extends UnicastRemoteObject implements GameFrame
 
 		if(first.shipLocation.size() == 0)
 		{
+			room.state = "end";
 			room.winner = String.valueOf(second.id);
 		}
 		if(second.shipLocation.size() == 0)
 		{
+			room.state = "end";
 			room.winner = String.valueOf(first.id);
 		}
 	}
 
-
+	// get self object to update client-end state
 	public Player getSelfState(Player player) throws java.rmi.RemoteException
 	{
 		Room room = rooms.get(player.roomId);
@@ -249,5 +251,104 @@ public class GameRMIImpl extends UnicastRemoteObject implements GameFrame
 		}
 		return self;
 	}
+
+	public void isAlive(Player player) throws java.rmi.RemoteException
+	{
+		Room room = rooms.get(player.roomId);
+
+		for(Player one: room.players)
+		{
+			player.alive = true;
+		}
+	}
 }
 
+// for checking client alive and dealing client in error
+class Daemon extends Thread 
+{
+	Map<Integer, Room> rooms = null;
+
+	public Daemon(Map<Integer, Room> r) 
+	{
+		this.rooms = r;
+	}
+
+	public void run() 
+	{
+		while(true)
+		{
+			try
+			{
+				// just wait
+				Thread.sleep(5000);
+
+				// remove the end-game room
+				removeEndRoom();
+
+				// dealing the player in error
+				dealErrorPlayer();
+				
+				// renew the alive state of all players
+				cancelAliveState();
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+	}
+
+	// remove the end-game room
+	public void removeEndRoom()
+	{
+		for(Room room: rooms.values())
+		{
+			if(room.state.equals("end"))
+			{
+				if( (room.players.get(0).alive == false) &&
+					(room.players.get(1).alive == false))
+				{
+					rooms.remove(room.id);
+				}
+			}
+		}
+	}
+
+	// dealing the player in error
+	public void dealErrorPlayer()
+	{
+		for(Room room: rooms.values())
+		{
+			if(room.state.equals("playing"))
+			{
+				// per 5 second, if one online, another disconnected, and, then, online-player win 
+				if((room.players.get(0).alive == true) && (room.players.get(1).alive == false))
+				{
+					setExceptWinner(room.players.get(0));
+				}
+				if((room.players.get(0).alive == false) && (room.players.get(1).alive == true))
+				{
+					setExceptWinner(room.players.get(1));
+				}
+			}
+		}
+	}
+	private void setExceptWinner(Player player)
+	{
+		Room room = rooms.get(player.roomId);
+		room.winner = String.valueOf(player.id);
+		room.state = "end";
+	}
+
+	// cancel all the players alive state
+	public void cancelAliveState()
+	{
+		for(Room room: rooms.values())
+		{
+			for(Player one: room.players)
+			{
+				one.alive = false;
+			}
+		}
+	}
+}

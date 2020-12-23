@@ -8,4 +8,5 @@ public class Player implements Serializable
     int roomId;
     List<Location> shipLocation = new ArrayList<Location>();
     List<Location> attackedLocation = new ArrayList<Location>();
+    boolean alive = true;
 }
