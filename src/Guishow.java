@@ -120,12 +120,7 @@ public class Guishow{
 		area.setLineWrap(true); 
 		jScrollPane = new JScrollPane(area);
 		guic.add(jScrollPane,BorderLayout.CENTER);
-		//chessBoarde = new JPanel(new GridLayout(1, 11));
-		//chessBoarde.setBorder(new LineBorder(Color.BLACK));
-		//chessBoardz = new Chessboard('z');
-		//chessBoarde=chessBoardz.getChessBoard();
 		guic.add(chessBoardy,BorderLayout.WEST);
-		//System.out.println(chessBoardz.getship_longth());
 		ground.add(aircraft_carrier); //BBV 
 		ground.add(battleship);//BB
 		ground.add(cruiser); //CL
@@ -135,12 +130,6 @@ public class Guishow{
 		ground.add(attack);
 		attack.setEnabled(!attack.isEnabled());
 		guic.add(ground,BorderLayout.SOUTH);
-		/*ActionListener deployee = new ActionListener(){
-			public void actionPerformed(ActionEvent e){
-				System.out.println("eee");
-				System.out.println(chessBoardz.getChessButton(0,1));
-			}
-		};*/
 		ActionListener deployListener = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
                         if(e.getActionCommand() == "BBV"){
@@ -212,31 +201,38 @@ public class Guishow{
 						System.out.println("error");
 					}else{
 						client.player.shipLocation = location;
-						chessBoardz.closeChessboard();
+						//chessBoardz.closeChessboard();
 						if(client.setbattleship() == false){ //set locate
 							System.out.println("error!!");
 						}
 						deployyy.setEnabled(!deployyy.isEnabled());
-					}
-					new Thread(new Runnable (){
+						new Thread(new Runnable (){
 						@Override
-						public void run(){
-							do{
-							if(client.playing()==true){
-								attack.setEnabled(!attack.isEnabled());
-								chessBoarde.ship_longth=1;
-								break;
+							public void run(){
+									do{
+										if(client.playing()==true){
+											//System.out.println("find");
+											client.getSelfState();
+											for (Location g : client.player.attackedLocation) {
+												System.out.println("x is " + g.x + "y is " + g.y);
+												chessBoardz.setChessButtoncolor(g.x,g.y,Color.red);
+											}
+											attack.setEnabled(!attack.isEnabled());
+											chessBoarde.ship_longth=1;
+											break;
+										}
+										else{
+											try
+											{
+												Thread.sleep(2000);
+											}
+											catch(InterruptedException ex) { }
+										}
+								}while(true);
 							}
-							else{
-								try
-								{
-									Thread.sleep(2000);
-								}
-								catch(InterruptedException ex) { }
-							}
-						}while(true);
-						}
-					}).start();
+						}).start();
+					}
+					
 					
 				}else if(e.getActionCommand() == "Attack")
 				{
@@ -246,6 +242,7 @@ public class Guishow{
 						//client.join();
 						//conb.setText("waiting");
 						//conb.setEnabled(!conb.isEnabled());
+							
 							for (i = 0; i < 10; i++) {
 								for (j = 0; j < 10; j++) {
 									//chessBoardz.chessBoardSquares[i][j](!chessBoardz.chessBoardSquares[i][j].isEnabled());
@@ -268,6 +265,7 @@ public class Guishow{
 								attack.setEnabled(!attack.isEnabled());
 								do{
 								if(client.playing()==true){
+									client.getSelfState();
 									attack.setEnabled(!attack.isEnabled());
 									chessBoarde.ship_longth=1;
 									break;
@@ -294,8 +292,6 @@ public class Guishow{
 		cruiser.addActionListener(deployListener);
 		destroyer.addActionListener(deployListener);
 		submarine.addActionListener(deployListener);
-		//deployyy.addActionListener(deployListener);
-		//attack.addActionListener(deployListener);
 		deployyy.addActionListener(playerrr);
 		attack.addActionListener(playerrr);
 	}
@@ -303,26 +299,6 @@ public class Guishow{
         return gui;
     }*/
 	public void playing(){
-		/*Runnable rr = new Runnable() {
-				public void run(){
-					System.out.println("aloha!!");
-					do{
-						if(client.playing()==true){
-							attack.setEnabled(attack.isEnabled());
-							break;
-						}
-						else{
-							try
-							{
-								Thread.sleep(2000);
-							}
-							catch(InterruptedException e) { }
-						}
-					}while(true);
-				}
-				};
-		rr.run();*/
-		//System.out.println("aloha!!");
 		do{
 			if(client.playing()==true){
 				attack.setEnabled(!attack.isEnabled());
@@ -345,7 +321,7 @@ public class Guishow{
         return guia;
     }
 	
-	static WindowListener close = new WindowAdapter(){
+	static WindowListener close = new WindowAdapter(){// close this window
 		public void windowClosing(WindowEvent we){
 			if (JOptionPane.showConfirmDialog(f,"Are you sure you want to close this window?","close Window?",
 				JOptionPane.YES_NO_OPTION,
