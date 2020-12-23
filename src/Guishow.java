@@ -250,7 +250,7 @@ public class Guishow{
 									{
 										locat = new Location(i,j);
 										chessBoarde.setChessButtoncolor(i,j,Color.yellow);
-										System.out.println("(" + i + "," + j + ") is red");
+										//System.out.println("(" + i + "," + j + ") is red");
 										break;
 									}
 								}
@@ -266,6 +266,10 @@ public class Guishow{
 								do{
 								if(client.playing()==true){
 									client.getSelfState();
+									for (Location g : client.player.attackedLocation) {
+										System.out.println("x is " + g.x + "y is " + g.y);
+										chessBoardz.setChessButtoncolor(g.x,g.y,Color.red);
+									}
 									attack.setEnabled(!attack.isEnabled());
 									chessBoarde.ship_longth=1;
 									break;
