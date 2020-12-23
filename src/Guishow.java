@@ -68,10 +68,15 @@ public class Guishow{
 		
 		ActionListener buttonListener = new ActionListener() {/*--------------------------here been change make a new class to cover it---------------------------*/
                     public void actionPerformed(ActionEvent e) {
+						
+						check_login = client.login(nickname.getText());// do first
+						client.join();
 						new Thread(new Runnable(){
 							@Override
 							public void run(){
-								client.join();
+								
+								conb.setText("waiting");
+								conb.setEnabled(!conb.isEnabled());
 								while(true){
 									//System.out.println("w");
 									if(client.getroomstate()!= false){ // room is created
@@ -182,33 +187,65 @@ public class Guishow{
 								submarine.setEnabled(!submarine.isEnabled());
 							}
 							//chessBoardy.ship_longth=1;
-						}else if(e.getActionCommand() == "Deploy"){
+						}
+				//System.out.println("get!! x is " + x + " y is " + y + "t is " + t);
+            }
+		//chessBoarde = new mkchessboard();
+		//---------------------------------------------------
+		};
+		ActionListener playerrr = new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				if(e.getActionCommand() == "Deploy"){
 							//System.out.println("eee");
-							for (i = 0; i < 10; i++) {
-								for (j = 0; j < 10; j++) {
+					for (i = 0; i < 10; i++) {
+						for (j = 0; j < 10; j++) {
 									//chessBoardz.chessBoardSquares[i][j](!chessBoardz.chessBoardSquares[i][j].isEnabled());
-									if(chessBoardz.getChessButton(i,j).getBackground()==Color.yellow)
-									{
-										Location ddd = new Location(i,j); // changing "Locate" to "Location"
-										location.add(ddd);
-										//System.out.println("(" + i + "," + j + ") is yellow");
-									}
-								}
+							if(chessBoardz.getChessButton(i,j).getBackground()==Color.yellow)
+							{
+								Location ddd = new Location(i,j); // changing "Locate" to "Location"
+								location.add(ddd);
+								//System.out.println("(" + i + "," + j + ") is yellow");
 							}
-							if(location.size() < 15){  //duplicate deploy
-								System.out.println("error");
-							}else{
-								client.player.shipLocation = location;
-								chessBoardz.closeChessboard();
-								if(client.setbattleship() == false){ //set locate
-									System.out.println("error!!");
-								}
-								play = true;
-								playing();
-								deployyy.setEnabled(!deployyy.isEnabled());
+						}
+					}
+					if(location.size() < 15){  //duplicate deploy
+						System.out.println("error");
+					}else{
+						client.player.shipLocation = location;
+						chessBoardz.closeChessboard();
+						if(client.setbattleship() == false){ //set locate
+							System.out.println("error!!");
+						}
+						deployyy.setEnabled(!deployyy.isEnabled());
+					}
+					new Thread(new Runnable (){
+						@Override
+						public void run(){
+							do{
+							if(client.playing()==true){
+								attack.setEnabled(!attack.isEnabled());
+								chessBoarde.ship_longth=1;
+								break;
 							}
-						}else if(e.getActionCommand() == "Attack"){
-							System.out.println("Attack");
+							else{
+								try
+								{
+									Thread.sleep(2000);
+								}
+								catch(InterruptedException ex) { }
+							}
+						}while(true);
+						}
+					}).start();
+					
+				}else if(e.getActionCommand() == "Attack")
+				{
+					new Thread(new Runnable(){
+					@Override
+					public void run(){
+						//client.join();
+						//conb.setText("waiting");
+						//conb.setEnabled(!conb.isEnabled());
 							for (i = 0; i < 10; i++) {
 								for (j = 0; j < 10; j++) {
 									//chessBoardz.chessBoardSquares[i][j](!chessBoardz.chessBoardSquares[i][j].isEnabled());
@@ -229,22 +266,38 @@ public class Guishow{
 								}
 								locat=null;
 								attack.setEnabled(!attack.isEnabled());
-								playing();
+								do{
+								if(client.playing()==true){
+									attack.setEnabled(!attack.isEnabled());
+									chessBoarde.ship_longth=1;
+									break;
+								}
+								else{
+									try
+									{
+										Thread.sleep(2000);
+									}
+									catch(InterruptedException e) { }
+								}
+								}while(true);
 							}
+					}
+				}).start();		
 							
-						}
-				//System.out.println("get!! x is " + x + " y is " + y + "t is " + t);
-            }
-		//chessBoarde = new mkchessboard();
-		//---------------------------------------------------
+							
+			}
+				
+			}	
 		};
 		aircraft_carrier.addActionListener(deployListener);
 		battleship.addActionListener(deployListener);
 		cruiser.addActionListener(deployListener);
 		destroyer.addActionListener(deployListener);
 		submarine.addActionListener(deployListener);
-		deployyy.addActionListener(deployListener);
-		attack.addActionListener(deployListener);
+		//deployyy.addActionListener(deployListener);
+		//attack.addActionListener(deployListener);
+		deployyy.addActionListener(playerrr);
+		attack.addActionListener(playerrr);
 	}
 	/*public final JComponent getGui() {
         return gui;
@@ -292,6 +345,16 @@ public class Guishow{
         return guia;
     }
 	
+	static WindowListener close = new WindowAdapter(){
+		public void windowClosing(WindowEvent we){
+			if (JOptionPane.showConfirmDialog(f,"Are you sure you want to close this window?","close Window?",
+				JOptionPane.YES_NO_OPTION,
+				JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
+					System.exit(0);
+				}
+		}
+	};
+	
 	public static void main(String args[]){
 		System.out.println("Hello Gui!!");
 		Guishow guib = new Guishow();
@@ -304,6 +367,7 @@ public class Guishow{
 				
 				f = new JFrame("warship");
 				f.add(guib.getGuia());
+				f.addWindowListener(close);
 				f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);// let Gui close when user use "x"
 				f.setLocationByPlatform(true);//
 				f.pack();
@@ -315,6 +379,8 @@ public class Guishow{
 		};
 		SwingUtilities.invokeLater(r);
 	}
+	
+	
 }
 
 class Chessboard extends JPanel{// make chessboard
