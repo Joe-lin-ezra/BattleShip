@@ -217,7 +217,7 @@ public class Client
 	public static void getSelfState(){
 		try
 		{
-			o.getSelfState(player);
+			player=o.getSelfState(player);
 			if(player.attackedLocation.isEmpty()){
 				System.out.println("attackedLocation isEmpty");
 			}
