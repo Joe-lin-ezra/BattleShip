@@ -259,7 +259,10 @@ public class GameRMIImpl extends UnicastRemoteObject implements GameFrame
 
 		for(Player one: room.players)
 		{
-			player.alive = true;
+			if(one.id == player.id)
+			{
+				one.alive = true;
+			}
 		}
 	}
 }
@@ -267,7 +270,7 @@ public class GameRMIImpl extends UnicastRemoteObject implements GameFrame
 
 // ---------------------------------------------------------------------------------------
 
-
+// to monitor the player connection, preventing them from disconnecting or error state
 class Daemon extends Thread 
 {
 	Map<Integer, Room> rooms = null;
