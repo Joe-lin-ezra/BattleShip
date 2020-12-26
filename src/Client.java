@@ -30,8 +30,6 @@ public class Client
 		
 		String c = null;
 		int h=0;
-		//System.setSecurityManager(new RMISecurityManager());
-		// Connect to RMIServer
 		try
 		{
 			// default is localhost if connect other computer please modify here
@@ -42,54 +40,6 @@ public class Client
 		{
 			System.out.println("Server lookup exception: " + e.getMessage());
 		}
-		//System.out.println("Hello Gui!!");
-		/*while(true){
-			System.out.println("Hello Guest");
-			System.out.print(">>");
-			c = scaneer.next();
-			if(c.compareTo("1") == 0){
-				System.out.println("Login!!!");
-				player.name = scaneer.next();
-				h=1;
-				
-			}
-			
-			try
-			{
-				switch(h){
-					case 1:
-						player = o.login(player);
-						break;
-				}
-			}catch(Exception e)
-			{
-				System.out.println("ArithmeticServer exception: " + e.getMessage());
-				e.printStackTrace();
-			}
-		}*/
-		
-		
-		/*Runnable r = new Runnable() {
-			@Override
-			public void run(){
-				f = new JFrame("warship");
-				f.add(guib.getGuia());
-				f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);// let Gui close when user use "x"
-				f.setLocationByPlatform(true);//
-				f.pack();
-                f.setMinimumSize(f.getSize());// ensures the minimum size is enforced.
-                f.setVisible(true);
-				f.setResizable(false);
-			}
-		}; */
-		//SwingUtilities.invokeLater(r);
-		//player = new Player();
-
-		// run login function in client
-		//while(!login(o, player)) {}
-
-		// run join function in client
-		//while(!join(o, player)) {}
 		
 	}
 	
@@ -160,7 +110,6 @@ public class Client
 			}else if(check_map.compareTo("success")==0){
 				return true;
 			}
-			//System.out.println(player.name + " GGroomId is " + player.roomId);
 		}
 		catch(Exception e)
 		{
@@ -173,8 +122,6 @@ public class Client
 	public static boolean playing()
 	{
 		String term = null;
-		//System.out.println("yaho!!");
-		//1. get order
 		try
 		{
 			term = o.whoseTerm(player);
@@ -193,43 +140,47 @@ public class Client
 			System.out.println("emery term !!!");
 			return false;
 		}
-		
-		//o.getSelfState();
-		//2. get attack()
-		//3.
 	}
-	public static boolean attack(Location loc)
+	public String attack(Location loc)
 	{
 		String state = null;
 		try
 		{
 			state = o.attack(player,loc);
 			System.out.println(state);
-			return true;
+			return state;
 		}
 		catch(Exception e)
 		{
 			System.out.println("GameServer exception: " + e.getMessage());
 			e.printStackTrace();
 		}
-		return false;
+		return state;
 	}
 	public static void getSelfState(){
 		try
 		{
 			player=o.getSelfState(player);
-			if(player.attackedLocation.isEmpty()){
-				System.out.println("attackedLocation isEmpty");
-			}
-			for(Location i: player.attackedLocation)
-			{
-				System.out.println("i is " + i);
-			}
 		}
 		catch(Exception e)
 		{
 			System.out.println("GameServer exception: " + e.getMessage());
 			e.printStackTrace();
 		}
+	}
+	public static String isAlive(){
+		String state = "";
+		try
+		{
+			o.isAlive(player);
+			state=o.getWinner(player);
+			return state;
+		}
+		catch(Exception e)
+		{
+			System.out.println("GameServer exception: " + e.getMessage());
+			e.printStackTrace();
+		}
+		return state;
 	}
 }
