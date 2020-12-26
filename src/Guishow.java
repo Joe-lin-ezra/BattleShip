@@ -41,7 +41,7 @@ public class Guishow{
 	//private Runnable rr;
 	//FlowLayout layout = new FlowLayout(FlowLayout.CENTER, 0, 0); 
 	int i,j;
-	
+	String state=null;
 	public ArrayList<Location> location = new ArrayList<Location>(); // changing "Locate" to "Location"
 	public Location locat = null;
 	Guishow(){
@@ -77,10 +77,12 @@ public class Guishow{
 								
 								conb.setText("waiting");
 								conb.setEnabled(!conb.isEnabled());
+								playing();
 								while(true){
 									//System.out.println("w");
 									if(client.getroomstate()!= false){ // room is created
 										updated();
+										area.append("connect!!!\n");
 										System.out.println("done");
 										break;
 									}else{ // waiting another player
@@ -133,7 +135,7 @@ public class Guishow{
 		ActionListener deployListener = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
                         if(e.getActionCommand() == "BBV"){
-							System.out.println("BBV");
+							//System.out.println("BBV");
 							//System.out.println("5. is "+chessBoardz.getship_longth());
 							if(chessBoardz.getship_longth()==0){
 								chessBoardz.setship_longth(5);
@@ -142,7 +144,7 @@ public class Guishow{
 							
 							//chessBoardy.ship_longth=5;
 						}else if(e.getActionCommand() == "BB"){
-							System.out.println("BB");
+							//System.out.println("BB");
 							if(chessBoardz.getship_longth()==0){
 								chessBoardz.ship_longth=4;
 								//System.out.println("4. is "+chessBoardz.getship_longth());
@@ -160,7 +162,7 @@ public class Guishow{
 							
 							//chessBoardy.ship_longth=3;
 						}else if(e.getActionCommand() == "DD"){
-							System.out.println("DD");
+							//System.out.println("DD");
 							if(chessBoardz.getship_longth()==0){
 								chessBoardz.ship_longth=2;
 								//System.out.println("2. is "+chessBoardz.getship_longth());
@@ -169,7 +171,7 @@ public class Guishow{
 							
 							//chessBoardy.ship_longth=2;
 						}else if(e.getActionCommand() == "SS"){
-							System.out.println("SS");
+							//System.out.println("SS");
 							if(chessBoardz.getship_longth()==0){
 								chessBoardz.ship_longth=1;
 								//System.out.println("1. is "+chessBoardz.getship_longth());
@@ -198,7 +200,8 @@ public class Guishow{
 						}
 					}
 					if(location.size() < 15){  //duplicate deploy
-						System.out.println("error");
+						area.append("your deploy is not ready!!!\n");
+						//System.out.println("error");
 					}else{
 						client.player.shipLocation = location;
 						//chessBoardz.closeChessboard();
@@ -206,15 +209,17 @@ public class Guishow{
 							System.out.println("error!!");
 						}
 						deployyy.setEnabled(!deployyy.isEnabled());
+						area.append("waiting\n");
 						new Thread(new Runnable (){
 						@Override
 							public void run(){
 									do{
 										if(client.playing()==true){
 											//System.out.println("find");
+											area.append("your term!!\n");
 											client.getSelfState();
 											for (Location g : client.player.attackedLocation) {
-												System.out.println("x is " + g.x + "y is " + g.y);
+												//System.out.println("x is " + g.x + "y is " + g.y);
 												chessBoardz.setChessButtoncolor(g.x,g.y,Color.red);
 											}
 											attack.setEnabled(!attack.isEnabled());
@@ -239,10 +244,6 @@ public class Guishow{
 					new Thread(new Runnable(){
 					@Override
 					public void run(){
-						//client.join();
-						//conb.setText("waiting");
-						//conb.setEnabled(!conb.isEnabled());
-							
 							for (i = 0; i < 10; i++) {
 								for (j = 0; j < 10; j++) {
 									//chessBoardz.chessBoardSquares[i][j](!chessBoardz.chessBoardSquares[i][j].isEnabled());
@@ -256,18 +257,21 @@ public class Guishow{
 								}
 							}
 							if(locat!=null){
-								if(client.attack(locat)==true){
-								System.out.println("sucess!!");
+								if(client.attack(locat)=="success"){
+									area.append("attack Success!!\n");
+									//System.out.println("sucess!!");
 								}else{
-									System.out.println("fail");
+									area.append("attack Fail!!\n");
+									//System.out.println("fail");
 								}
 								locat=null;
 								attack.setEnabled(!attack.isEnabled());
 								do{
 								if(client.playing()==true){
 									client.getSelfState();
+									area.append("your Term!!\n");
 									for (Location g : client.player.attackedLocation) {
-										System.out.println("x is " + g.x + "y is " + g.y);
+										//System.out.println("x is " + g.x + "y is " + g.y);
 										chessBoardz.setChessButtoncolor(g.x,g.y,Color.red);
 									}
 									attack.setEnabled(!attack.isEnabled());
@@ -303,23 +307,25 @@ public class Guishow{
         return gui;
     }*/
 	public void playing(){
-		do{
-			if(client.playing()==true){
-				attack.setEnabled(!attack.isEnabled());
-				chessBoarde.ship_longth=1;
-				break;
-			}
-			else
-			{
-				try
-				{
-					Thread.sleep(2000);
-				}
-				catch(InterruptedException e) { }
-			}
-		}while(true);
 		
-		//System.out.println("AAAAAAAAAAAAAAAA");
+		new Thread(new Runnable(){
+			@Override
+			public void run(){
+				while(true){
+					state=client.isAlive();
+					if(!state.equals("")){
+						int y=Integer.parseInt(state);
+						if(y==client.player.id){
+							System.out.println("you Win");
+							break;
+						}else{
+							System.out.println("you Lose");
+							break;
+						}
+					}
+				}
+			}
+		}).start();
 	}
 	public final JComponent getGuia() {
         return guia;
@@ -390,7 +396,7 @@ class Chessboard extends JPanel{// make chessboard
         return chessBoardSquares[x][y];
     }
 	public void setChessButtoncolor(int x,int y,Color color) {  // return 
-		System.out.println("yee");
+		//System.out.println("yee");
 		chessBoardSquares[x][y].setBackground(color);
         //switchstate(x,y,color,1);
     }
@@ -505,7 +511,7 @@ class Chessboard extends JPanel{// make chessboard
 						break;
 				}
 			} catch (Exception ex){
-				System.out.println("out of range");
+				//System.out.println("out of range");
 			}
 		}else if(this.ship_ver==1)
 		{
@@ -597,7 +603,7 @@ class Chessboard extends JPanel{// make chessboard
 											chessBoardSquares[x][y+1].setBackground(color);
 											chessBoardSquares[x][y+2].setBackground(color);
 											if(mode==1){
-												System.out.println("deploy!!!");
+												//System.out.println("deploy!!!");
 												//System.out.println("ship_length is " + this.ship_longth);
 												this.ship_longth=0;
 												//System.out.println("ship_length is " + this.ship_longth);
@@ -610,7 +616,7 @@ class Chessboard extends JPanel{// make chessboard
 						break;
 					}
 				}catch(Exception ex){
-					System.out.println("out of range");
+					//System.out.println("out of range");
 				}
 			}
 		}
