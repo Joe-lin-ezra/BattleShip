@@ -257,7 +257,7 @@ public class Guishow{
 								}
 							}
 							if(locat!=null){
-								if(client.attack(locat)=="success"){
+								if(client.attack(locat).equals("success")){
 									area.append("attack Success!!\n");
 									//System.out.println("sucess!!");
 								}else{
@@ -292,7 +292,6 @@ public class Guishow{
 							
 							
 			}
-				
 			}	
 		};
 		aircraft_carrier.addActionListener(deployListener);
@@ -317,9 +316,11 @@ public class Guishow{
 						int y=Integer.parseInt(state);
 						if(y==client.player.id){
 							System.out.println("you Win");
+							area.append("you Win!!\n");
 							break;
 						}else{
 							System.out.println("you Lose");
+							area.append("you Lose!!\n");
 							break;
 						}
 					}
