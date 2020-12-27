@@ -102,11 +102,6 @@ public class GameRMIImpl extends UnicastRemoteObject implements GameFrame
 			room.joinRoom(player);
 			room.state = "playing";
 			rooms.put(roomId, room);
-			
-			// decide the order of attack
-			Random random = new Random();
-			int prior = random.nextInt(2);
-			room.term = String.valueOf(room.players.get(prior).id);
 		}
 		else
 		{
@@ -158,6 +153,7 @@ public class GameRMIImpl extends UnicastRemoteObject implements GameFrame
 			{
 				room.players.remove(i);
 				room.players.add(player);
+				setAttackOrder(player);
 				printState();
 				return "success";
 			}	
@@ -165,6 +161,22 @@ public class GameRMIImpl extends UnicastRemoteObject implements GameFrame
 		printState();
 		return "fail";
 	}
+	// decide the order of attack
+	private void setAttackOrder(Player player)
+	{
+		Room room = rooms.get(player.roomId);
+		for(Player one: room.players)
+		{
+			if(one.shipLocation.size() == 0)
+			{
+				return ;
+			}
+		}
+		Random random = new Random();
+		int prior = random.nextInt(2);
+		room.term = String.valueOf(room.players.get(prior).id);
+	}
+
 
 	public String getWinner(Player player) throws java.rmi.RemoteException
 	{
