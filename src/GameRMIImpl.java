@@ -62,7 +62,6 @@ public class GameRMIImpl extends UnicastRemoteObject implements GameFrame
 				}
 			}
 		}
-
 		System.out.println("================       status end       ========================");
 	}
 
@@ -146,13 +145,11 @@ public class GameRMIImpl extends UnicastRemoteObject implements GameFrame
 	public String setPlayerMap(Player player) throws java.rmi.RemoteException
 	{
 		Room room = rooms.get(player.roomId);
-		for(int i = 0; i < room.players.size(); i++)
+		for(Player one: room.players)
 		{
-			Player another = room.players.get(i);
-			if(player.id == another.id)
+			if(player.id == one.id)
 			{
-				room.players.remove(i);
-				room.players.add(player);
+				one.shipLocation = player.shipLocation;
 				setAttackOrder(player);
 				printState();
 				return "success";
