@@ -10,6 +10,7 @@ public class Guishow{
 	Client client = null;
 	private final JPanel guia = new JPanel(new BorderLayout(3, 3));  //test
 	private final JPanel guic = new JPanel(new BorderLayout(3, 3));  //test
+	private final JPanel guid = new JPanel(new BorderLayout(3, 3));
 	//private static final JPanel gui = new JPanel(new BorderLayout(3, 3));
 	
 	private JPanel chessBoardy,chessBoardg;
@@ -21,8 +22,10 @@ public class Guishow{
 	private JPanel title = new JPanel(new FlowLayout(FlowLayout.CENTER));
 	private JPanel content  = new JPanel(new FlowLayout(FlowLayout.LEADING));
 	private JPanel ground  = new JPanel(new FlowLayout(FlowLayout.LEADING));
+	private JPanel endedpage = new JPanel(new FlowLayout(FlowLayout.CENTER));
 	private JButton conb = new JButton("Start Game");
 	private JLabel namelabel = new JLabel("Nickname :");
+	private JLabel ended = new JLabel("");
 	private JTextField nickname;
 	private JTextArea area = new JTextArea();
 	private static final String COLS = "ABCDEFGHIJK";
@@ -60,7 +63,13 @@ public class Guishow{
 		//f.repaint();
 		f.setVisible(true);
 	}
-	
+	private void last(String str){
+		f.remove(guic);
+		Settlement(str);
+		f.add(guid);
+		f.setMinimumSize(f.getSize());
+		f.setVisible(true);
+	}
 	public final void welcomepage(){
 		guia.setBorder(new EmptyBorder(5, 5, 5, 5)); // make border style
 		nickname = new JTextField(20);
@@ -96,7 +105,6 @@ public class Guishow{
 						
 					}
 		};
-		
 		conb.addActionListener(buttonListener);
 		title.add(message);
 		guia.add(title,BorderLayout.NORTH);
@@ -106,7 +114,12 @@ public class Guishow{
 		guia.add(content,BorderLayout.CENTER);
 		
 	}
-	
+	public void Settlement(String str){
+			guid.setBorder(new EmptyBorder(5, 5, 5, 5));
+			ended.setText(str);
+			endedpage.add(ended);
+			guid.add(endedpage,BorderLayout.CENTER);
+	}
 	public final void initializeGui(){
 		guic.setBorder(new EmptyBorder(5, 5, 5, 5)); // make border style
 		guic.add(message,BorderLayout.NORTH); 
@@ -317,10 +330,12 @@ public class Guishow{
 						if(y==client.player.id){
 							System.out.println("you Win");
 							area.append("you Win!!\n");
+							last("you Win!!");
 							break;
 						}else{
 							System.out.println("you Lose");
 							area.append("you Lose!!\n");
+							last("you Lose!!");
 							break;
 						}
 					}
