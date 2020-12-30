@@ -65,10 +65,16 @@ public class Guishow{
 	}
 	private void last(String str){
 		f.remove(guic);
-		Settlement(str);
-		f.add(guid);
-		f.setMinimumSize(f.getSize());
-		f.setVisible(true);
+		//Settlement(str);
+		int result = JOptionPane.showConfirmDialog(f,str,"Win or Lose?",
+				JOptionPane.DEFAULT_OPTION,
+				JOptionPane.INFORMATION_MESSAGE);
+		if ( result == JOptionPane.YES_OPTION){
+					System.exit(0);
+				}
+		//f.add(guid);
+		//f.setMinimumSize(f.getSize());
+		//f.setVisible(true);
 	}
 	public final void welcomepage(){
 		guia.setBorder(new EmptyBorder(5, 5, 5, 5)); // make border style
@@ -114,12 +120,12 @@ public class Guishow{
 		guia.add(content,BorderLayout.CENTER);
 		
 	}
-	public void Settlement(String str){
+	/*public void Settlement(String str){
 			guid.setBorder(new EmptyBorder(5, 5, 5, 5));
 			ended.setText(str);
 			endedpage.add(ended);
 			guid.add(endedpage,BorderLayout.CENTER);
-	}
+	}*/
 	public final void initializeGui(){
 		guic.setBorder(new EmptyBorder(5, 5, 5, 5)); // make border style
 		guic.add(message,BorderLayout.NORTH); 
@@ -349,9 +355,10 @@ public class Guishow{
 	
 	static WindowListener close = new WindowAdapter(){// close this window
 		public void windowClosing(WindowEvent we){
-			if (JOptionPane.showConfirmDialog(f,"Are you sure you want to close this window?","close Window?",
+			int result = JOptionPane.showConfirmDialog(f,"Are you sure you want to close this window?","close Window?",
 				JOptionPane.YES_NO_OPTION,
-				JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
+				JOptionPane.QUESTION_MESSAGE);
+			if ( result == JOptionPane.YES_OPTION){
 					System.exit(0);
 				}
 		}
@@ -370,13 +377,12 @@ public class Guishow{
 				f = new JFrame("warship");
 				f.add(guib.getGuia());
 				f.addWindowListener(close);
-				f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);// let Gui close when user use "x"
+				f.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);// let Gui close when user use "x"
 				f.setLocationByPlatform(true);//
 				f.pack();
                 f.setMinimumSize(f.getSize());// ensures the minimum size is enforced.
                 f.setVisible(true);
-				f.setResizable(false);
-				//System.out.println("yaho!!");
+				//f.setResizable(false);
 			}
 		};
 		SwingUtilities.invokeLater(r);
