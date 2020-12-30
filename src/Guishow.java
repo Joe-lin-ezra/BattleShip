@@ -43,7 +43,7 @@ public class Guishow{
 	private JButton attack = new JButton("Attack");
 	//private Runnable rr;
 	//FlowLayout layout = new FlowLayout(FlowLayout.CENTER, 0, 0); 
-	int i,j;
+	int i,j,s;
 	String state=null;
 	public ArrayList<Location> location = new ArrayList<Location>(); // changing "Locate" to "Location"
 	public Location locat = null;
@@ -260,15 +260,23 @@ public class Guishow{
 					
 				}else if(e.getActionCommand() == "Attack")
 				{
+					System.out.println("in attack!!");
 					new Thread(new Runnable(){
 					@Override
 					public void run(){
+						
 							for (i = 0; i < 10; i++) {
 								for (j = 0; j < 10; j++) {
 									//chessBoardz.chessBoardSquares[i][j](!chessBoardz.chessBoardSquares[i][j].isEnabled());
 									if(chessBoarde.getChessButton(i,j).getBackground()==Color.red)
 									{
 										locat = new Location(i,j);
+										/*if(s==1){
+											chessBoarde.setChessButtoncolor(i,j,Color.green);
+										}else{
+											chessBoarde.setChessButtoncolor(i,j,Color.yellow);
+										}
+										s=0;*/
 										chessBoarde.setChessButtoncolor(i,j,Color.yellow);
 										//System.out.println("(" + i + "," + j + ") is red");
 										break;
@@ -278,11 +286,19 @@ public class Guishow{
 							if(locat!=null){
 								if(client.attack(locat).equals("success")){
 									area.append("attack Success!!\n");
+									s=1;
 									//System.out.println("sucess!!");
 								}else{
 									area.append("attack Fail!!\n");
+									s=0;
 									//System.out.println("fail");
 								}
+								if(s==1){
+											chessBoarde.setChessButtoncolor(locat.x,locat.y,Color.green);
+										}else{
+											chessBoarde.setChessButtoncolor(locat.x,locat.y,Color.yellow);
+										}
+								//chessBoarde.setChessButtoncolor(locat.x,locat.y,Color.yellow);
 								locat=null;
 								attack.setEnabled(!attack.isEnabled());
 								do{
@@ -444,7 +460,7 @@ class Chessboard extends JPanel{// make chessboard
 			try{
 				switch(this.ship_longth){
 					case 1:
-						if(chessBoardSquares[x][y].getBackground() != Color.YELLOW)
+						if(chessBoardSquares[x][y].getBackground() != Color.YELLOW && chessBoardSquares[x][y].getBackground() != Color.green)
 						{
 							chessBoardSquares[x][y].setBackground(color);
 							if(mode==1){
@@ -454,9 +470,9 @@ class Chessboard extends JPanel{// make chessboard
 						}
 						break;
 					case 2:
-						if(chessBoardSquares[x][y].getBackground() != Color.YELLOW)
+						if(chessBoardSquares[x][y].getBackground() != Color.YELLOW && chessBoardSquares[x][y].getBackground() != Color.green)
 						{
-							if(chessBoardSquares[x+1][y].getBackground() != Color.YELLOW)
+							if(chessBoardSquares[x+1][y].getBackground() != Color.YELLOW && chessBoardSquares[x+1][y].getBackground() != Color.green)
 							{
 								chessBoardSquares[x][y].setBackground(color);
 								chessBoardSquares[x+1][y].setBackground(color);
@@ -467,11 +483,11 @@ class Chessboard extends JPanel{// make chessboard
 						}
 						break;
 					case 3:
-						if(chessBoardSquares[x-1][y].getBackground() != Color.YELLOW)
+						if(chessBoardSquares[x-1][y].getBackground() != Color.YELLOW && chessBoardSquares[x-1][y].getBackground() != Color.green)
 						{
-							if(chessBoardSquares[x][y].getBackground() != Color.YELLOW)
+							if(chessBoardSquares[x][y].getBackground() != Color.YELLOW && chessBoardSquares[x][y].getBackground() != Color.green)
 							{
-								if(chessBoardSquares[x+1][y].getBackground() != Color.YELLOW)
+								if(chessBoardSquares[x+1][y].getBackground() != Color.YELLOW && chessBoardSquares[x+1][y].getBackground() != Color.green)
 								{
 									chessBoardSquares[x-1][y].setBackground(color);
 									chessBoardSquares[x][y].setBackground(color);
@@ -484,13 +500,13 @@ class Chessboard extends JPanel{// make chessboard
 						}
 						break;
 					case 4:
-						if(chessBoardSquares[x-2][y].getBackground() != Color.YELLOW)
+						if(chessBoardSquares[x-2][y].getBackground() != Color.YELLOW && chessBoardSquares[x-2][y].getBackground() != Color.green)
 						{
-							if(chessBoardSquares[x-1][y].getBackground() != Color.YELLOW)
+							if(chessBoardSquares[x-1][y].getBackground() != Color.YELLOW && chessBoardSquares[x-1][y].getBackground() != Color.green)
 							{
-								if(chessBoardSquares[x][y].getBackground() != Color.YELLOW)
+								if(chessBoardSquares[x][y].getBackground() != Color.YELLOW && chessBoardSquares[x][y].getBackground() != Color.green)
 								{
-									if(chessBoardSquares[x+1][y].getBackground() != Color.YELLOW)
+									if(chessBoardSquares[x+1][y].getBackground() != Color.YELLOW && chessBoardSquares[x+1][y].getBackground() != Color.green)
 									{
 										chessBoardSquares[x-2][y].setBackground(color);
 										chessBoardSquares[x-1][y].setBackground(color);
@@ -505,15 +521,15 @@ class Chessboard extends JPanel{// make chessboard
 						}
 						break;
 					case 5:
-						if(chessBoardSquares[x-2][y].getBackground() != Color.YELLOW)
+						if(chessBoardSquares[x-2][y].getBackground() != Color.YELLOW && chessBoardSquares[x-2][y].getBackground() != Color.green)
 						{
-							if(chessBoardSquares[x-1][y].getBackground() != Color.YELLOW)
+							if(chessBoardSquares[x-1][y].getBackground() != Color.YELLOW && chessBoardSquares[x-1][y].getBackground() != Color.green)
 							{
-								if(chessBoardSquares[x][y].getBackground() != Color.YELLOW)
+								if(chessBoardSquares[x][y].getBackground() != Color.YELLOW && chessBoardSquares[x][y].getBackground() != Color.green)
 								{
-									if(chessBoardSquares[x+1][y].getBackground() != Color.YELLOW)
+									if(chessBoardSquares[x+1][y].getBackground() != Color.YELLOW && chessBoardSquares[x+1][y].getBackground() != Color.green)
 									{
-										if(chessBoardSquares[x+2][y].getBackground() != Color.YELLOW)
+										if(chessBoardSquares[x+2][y].getBackground() != Color.YELLOW && chessBoardSquares[x+2][y].getBackground() != Color.green)
 										{
 											chessBoardSquares[x-2][y].setBackground(color);
 											chessBoardSquares[x-1][y].setBackground(color);
@@ -546,7 +562,7 @@ class Chessboard extends JPanel{// make chessboard
 			try{
 				switch(this.ship_longth){
 					case 1:
-						if(chessBoardSquares[x][y].getBackground() != Color.YELLOW)
+						if(chessBoardSquares[x][y].getBackground() != Color.YELLOW && chessBoardSquares[x][y].getBackground() != Color.green)
 						{
 							chessBoardSquares[x][y].setBackground(color);
 							if(mode==1){
@@ -557,9 +573,9 @@ class Chessboard extends JPanel{// make chessboard
 						}
 						break;
 					case 2:
-						if(chessBoardSquares[x][y].getBackground() != Color.YELLOW)
+						if(chessBoardSquares[x][y].getBackground() != Color.YELLOW && chessBoardSquares[x][y].getBackground() != Color.green)
 						{
-							if(chessBoardSquares[x][y+1].getBackground() != Color.YELLOW)
+							if(chessBoardSquares[x][y+1].getBackground() != Color.YELLOW && chessBoardSquares[x][y+1].getBackground() != Color.green)
 							{
 								chessBoardSquares[x][y].setBackground(color);
 								chessBoardSquares[x][y+1].setBackground(color);
@@ -570,11 +586,11 @@ class Chessboard extends JPanel{// make chessboard
 						}
 						break;
 					case 3:
-						if(chessBoardSquares[x][y-1].getBackground() != Color.YELLOW)
+						if(chessBoardSquares[x][y-1].getBackground() != Color.YELLOW && chessBoardSquares[x][y-1].getBackground() != Color.green)
 						{
-							if(chessBoardSquares[x][y].getBackground() != Color.YELLOW)
+							if(chessBoardSquares[x][y].getBackground() != Color.YELLOW && chessBoardSquares[x][y].getBackground() != Color.green)
 							{
-								if(chessBoardSquares[x][y+1].getBackground() != Color.YELLOW)
+								if(chessBoardSquares[x][y+1].getBackground() != Color.YELLOW && chessBoardSquares[x][y+1].getBackground() != Color.green)
 								{
 									chessBoardSquares[x][y-1].setBackground(color);
 									chessBoardSquares[x][y].setBackground(color);
@@ -587,13 +603,13 @@ class Chessboard extends JPanel{// make chessboard
 						}	
 						break;
 					case 4:
-						if(chessBoardSquares[x][y-2].getBackground() != Color.YELLOW)
+						if(chessBoardSquares[x][y-2].getBackground() != Color.YELLOW && chessBoardSquares[x][y-2].getBackground() != Color.green)
 						{
-							if(chessBoardSquares[x][y-1].getBackground() != Color.YELLOW)
+							if(chessBoardSquares[x][y-1].getBackground() != Color.YELLOW && chessBoardSquares[x][y-1].getBackground() != Color.green)
 							{
-								if(chessBoardSquares[x][y].getBackground() != Color.YELLOW)
+								if(chessBoardSquares[x][y].getBackground() != Color.YELLOW && chessBoardSquares[x][y].getBackground() != Color.green)
 								{
-									if(chessBoardSquares[x][y+1].getBackground() != Color.YELLOW)
+									if(chessBoardSquares[x][y+1].getBackground() != Color.YELLOW && chessBoardSquares[x][y+1].getBackground() != Color.green)
 									{
 										chessBoardSquares[x][y-2].setBackground(color);
 										chessBoardSquares[x][y-1].setBackground(color);
@@ -608,15 +624,15 @@ class Chessboard extends JPanel{// make chessboard
 						}
 						break;
 					case 5:
-						if(chessBoardSquares[x][y-2].getBackground() != Color.YELLOW)
+						if(chessBoardSquares[x][y-2].getBackground() != Color.YELLOW && chessBoardSquares[x][y-2].getBackground() != Color.green)
 						{
-							if(chessBoardSquares[x][y-1].getBackground() != Color.YELLOW)
+							if(chessBoardSquares[x][y-1].getBackground() != Color.YELLOW && chessBoardSquares[x][y-1].getBackground() != Color.green)
 							{
-								if(chessBoardSquares[x][y].getBackground() != Color.YELLOW)
+								if(chessBoardSquares[x][y].getBackground() != Color.YELLOW && chessBoardSquares[x][y].getBackground() != Color.green)
 								{
-									if(chessBoardSquares[x][y+1].getBackground() != Color.YELLOW)
+									if(chessBoardSquares[x][y+1].getBackground() != Color.YELLOW && chessBoardSquares[x][y+1].getBackground() != Color.green)
 									{
-										if(chessBoardSquares[x][y+2].getBackground() != Color.YELLOW)
+										if(chessBoardSquares[x][y+2].getBackground() != Color.YELLOW && chessBoardSquares[x][y+2].getBackground() != Color.green)
 										{
 											//System.out.println("5-5");
 											chessBoardSquares[x][y-2].setBackground(color);
