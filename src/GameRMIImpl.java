@@ -352,6 +352,13 @@ class Daemon extends Thread
 					setExceptWinner(room.players.get(1));
 				}
 			}
+			if(room.state.equals("free"))
+			{
+				if(room.players.get(0).alive == false)
+				{
+					rooms.remove(room.id);
+				}
+			}
 		}
 	}
 	private void setExceptWinner(Player player)
