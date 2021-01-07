@@ -34,7 +34,7 @@ public class GameRMIImpl extends UnicastRemoteObject implements GameFrame
 			System.out.println("\tRoom state: " + room.state);
 			System.out.println("\tRoom winner: " + room.winner);
 			System.out.println("\tRoom player number:" + room.players.size());
-			for(Player player: room.players)
+			for(AbstractPlayer player: room.players)
 			{
 				System.out.println("\t      * player id: " + player.id);
 				System.out.println("\t\tplayer name: " + player.name);

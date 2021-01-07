@@ -1,12 +1,13 @@
 import java.util.*;
 import java.io.Serializable;
 
-public class Player implements Serializable
+public abstract class AbstractPlayer implements Serializable
 {
     int id;
     String name;
     int roomId;
-    List<Location> shipLocation = new ArrayList<Location>();
+    // depends on player type
+    // List<Location> shipLocation = new ArrayList<Location>();
     List<Location> attackedLocation = new ArrayList<Location>();
     boolean alive = true;
 }
