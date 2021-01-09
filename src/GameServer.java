@@ -9,7 +9,7 @@ public class GameServer
 		//System.setSecurityManager(new RMISecurityManager());
 		try
 		{
-			GameRMIImpl name = new GameRMIImpl();
+			AbstractGameRMIImpl name = new BattleShipGameRMIImpl();
 			System.out.println("Registering ...");
 			Naming.rebind("game", name);	// game is the name of the service
 			System.out.println("Register success");
