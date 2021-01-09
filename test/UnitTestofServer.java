@@ -1,11 +1,3 @@
-import java
-
-public class UnitTestofServer {
-    public static void main(String[] args) {
-
-    }
-}
-
 
 // import java.io.*;
 // import java.rmi.*;
