@@ -1,13 +1,13 @@
 import java.rmi.*;
 import java.rmi.server.*;
 
-public class GameServer
+public class FighterAirplaneServer extends GameServer
 {
 	// Bind GameServer and Registry
 	public static void main(String args[])
 	{
 		//System.setSecurityManager(new RMISecurityManager());
-        GameServer s = new GameServer();
+        GameServer s = new FighterAirplaneServer();
         s.establishServer();
     }
     

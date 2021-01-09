@@ -10,7 +10,7 @@ public class UnitTestofServer {
         GameFrame o = null;
 		try
 		{
-			o = (GameFrame) Naming.lookup("rmi://127.0.0.1/game");
+			o = (GameFrame) Naming.lookup("rmi://127.0.0.1/FighterAirplane");
 			System.out.println("RMI server connected");
 		}
 		catch(Exception e)
