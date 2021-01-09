@@ -32,6 +32,7 @@ public class UnitTestofServer {
         }
         System.out.println("room state: " + state);
 
+        // ** airplan test data
         for(int i = 0; i < 7; i++)
         {
             ArrayList<Location> l = new ArrayList<Location>();
@@ -50,6 +51,13 @@ public class UnitTestofServer {
             put(2, l);
         }
         
+        // ArrayList<Location> tmp = new ArrayList<Location>();
+        // for(int i = 1; i < 7; i++)
+        // {
+        //     tmp.add(new Location(i, i));
+        // }
+        // ((BattleShipPlayer)player).shipLocation = tmp;
+
         // set player map
         try
         {
@@ -74,8 +82,13 @@ public class UnitTestofServer {
         try
         {
             Thread.sleep(6000);
-            String str = o.attack(player, new Location(1, 1));
-            System.out.println(str);
+            ArrayList<Location> str = o.attack(player, new Location(1, 1));
+            System.out.println("array size: " + str.size());
+            for(Location l: str)
+            {
+                System.out.print("(" + l.x + ", " + l.y + "), ");
+            }
+            System.out.println();
         }
         catch(Exception e)
         {

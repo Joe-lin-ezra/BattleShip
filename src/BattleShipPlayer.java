@@ -28,6 +28,7 @@ public class BattleShipPlayer extends AbstractPlayer implements Serializable
             if((location.x == l.x) && (location.y == l.y))
             {
                 result.add(location); 
+                attackedLocation.add(location);
                 shipLocation.remove(location);
                 return result;
             }

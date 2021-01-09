@@ -24,13 +24,15 @@ public class FighterAirplanePlayer extends AbstractPlayer implements Serializabl
         for(Integer index: fighterAirplaneLocation.keySet())
         {
             ArrayList<Location> locations = fighterAirplaneLocation.get(index);
-            for(Location location: locations)
-            if((location.x == l.x) && (location.y == l.y))
-            {
-                fighterAirplaneLocation.remove(index);
-                attackedLocation.addAll(locations);
-                return result;
-            }
+            for(Location location: locations){
+                if((location.x == l.x) && (location.y == l.y))
+                {
+                    fighterAirplaneLocation.remove(index);
+                    attackedLocation.addAll(locations);
+                    result.addAll(locations);
+                    return result;
+                }
+            }      
         }
         return result;
     }

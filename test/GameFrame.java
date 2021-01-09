@@ -16,7 +16,7 @@ public interface GameFrame extends Remote
 	public String setPlayerMap(AbstractPlayer player) throws java.rmi.RemoteException; 
 	public String whoseTerm(AbstractPlayer player) throws java.rmi.RemoteException;
 	public String getWinner(AbstractPlayer player) throws java.rmi.RemoteException;
-	public String attack(AbstractPlayer player, Location location) throws java.rmi.RemoteException;
+	public ArrayList<Location> attack(AbstractPlayer player, Location location) throws java.rmi.RemoteException;
 	public AbstractPlayer getSelfState(AbstractPlayer player) throws java.rmi.RemoteException;
 	public void isAlive(AbstractPlayer player) throws java.rmi.RemoteException;
 }
