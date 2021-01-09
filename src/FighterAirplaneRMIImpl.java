@@ -3,9 +3,9 @@ import java.rmi.server.*;
 import java.util.*;
 import java.lang.*;
 
-public class BattleShipGameRMIImpl extends AbstractGameRMIImpl implements GameFrame
+public class FighterAirplaneRMIImpl extends AbstractGameRMIImpl implements GameFrame
 {
-	public BattleShipGameRMIImpl() throws java.rmi.RemoteException
+    public FighterAirplaneRMIImpl() throws java.rmi.RemoteException
 	{
 		super(); 	// Use constructor of parent class
 		thread = new Daemon(rooms, this);
@@ -16,13 +16,20 @@ public class BattleShipGameRMIImpl extends AbstractGameRMIImpl implements GameFr
 	
 	public void printLocation(AbstractPlayer player)
 	{
-		if(player instanceof BattleShipPlayer)
+		if(player instanceof FighterAirplanePlayer)
 		{
-			if (((BattleShipPlayer)player).shipLocation != null) {
-				System.out.print("\t\t\t");
-				for (Location position : ((BattleShipPlayer)player).shipLocation) {
-					System.out.print("(" + position.x + ", " + position.y + "), ");
-				}
+			if (((FighterAirplanePlayer)player).fighterAirplaneLocation != null) {
+                System.out.print("\t\t\t");
+                for(Integer index: ((FighterAirplanePlayer)player).fighterAirplaneLocation.keySet())
+                {
+                    System.out.print(index + ": {");
+                    ArrayList<Location> locations = ((FighterAirplanePlayer)player).fighterAirplaneLocation.get(index);
+                    for(Location l: locations)
+                    {
+                        System.out.print("(" + l.x + ", " + l.y + "), ");
+                    }
+                    System.out.print("}, ");
+                }
 				System.out.println();
 			}
 	

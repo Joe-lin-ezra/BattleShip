@@ -1,3 +1,4 @@
+import java.lang.*;
 import java.util.*;
 import java.io.Serializable;
 
@@ -15,5 +16,19 @@ public class FighterAirplanePlayer extends AbstractPlayer implements Serializabl
     public int getDeployLength()
     {
         return fighterAirplaneLocation.size();
+    }
+
+    public String attacked(Location l)
+    {
+        for(Integer index: fighterAirplaneLocation.keySet())
+        {
+            ArrayList<Location> locations = fighterAirplaneLocation.get(index);
+            if(locations.contains(l))
+            {
+                fighterAirplaneLocation.remove(index);
+                return "success";
+            }
+        }
+        return "fail";
     }
 }

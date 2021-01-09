@@ -168,7 +168,7 @@ public abstract class AbstractGameRMIImpl extends UnicastRemoteObject implements
     }
        
 	// set the winner in specific room
-	private void setWinner(AbstractPlayer player) throws java.rmi.RemoteException
+	protected void setWinner(AbstractPlayer player) throws java.rmi.RemoteException
 	{
 		Room room = rooms.get(player.roomId);
 		// find another player
