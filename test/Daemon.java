@@ -33,7 +33,7 @@ public class Daemon extends Thread
 				dealErrorPlayer();
 				this.mainThread.printState();
 				// renew the alive state of all players
-				cancelAliveState();
+				// cancelAliveState();
 				this.mainThread.printState();
 			}
 			catch(Exception e)

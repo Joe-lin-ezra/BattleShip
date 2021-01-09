@@ -21,11 +21,14 @@ public class BattleShipPlayer extends AbstractPlayer implements Serializable
 
     public String attacked(Location l)
     {
-        if(shipLocation.contains(l))
+        for(Location location: shipLocation)
         {
-            shipLocation.remove(l);
-            return "success";
-        }
+            if((location.x == l.x) && (location.y == l.y))
+            {
+                shipLocation.remove(location);
+                return "success";
+            }
+        }        
         return "fail";
     }
 }

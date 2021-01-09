@@ -127,6 +127,7 @@ public abstract class AbstractGameRMIImpl extends UnicastRemoteObject implements
 	public String setPlayerMap(AbstractPlayer player) throws java.rmi.RemoteException
 	{
 		Room room = rooms.get(player.roomId);
+		try{
 		for(AbstractPlayer one: room.players)
 		{
 			if(player.id == one.id)
@@ -136,7 +137,8 @@ public abstract class AbstractGameRMIImpl extends UnicastRemoteObject implements
 				printState();
 				return "success";
 			}
-		}
+		}}
+		catch(Exception e){e.printStackTrace();}
 		printState();
 		return "fail";
 	}

@@ -23,7 +23,8 @@ public class FighterAirplanePlayer extends AbstractPlayer implements Serializabl
         for(Integer index: fighterAirplaneLocation.keySet())
         {
             ArrayList<Location> locations = fighterAirplaneLocation.get(index);
-            if(locations.contains(l))
+            for(Location location: locations)
+            if((location.x == l.x) && (location.y == l.y))
             {
                 fighterAirplaneLocation.remove(index);
                 return "success";
