@@ -13,5 +13,5 @@ public abstract class AbstractPlayer implements Serializable
 
     public abstract void setDeployment(AbstractPlayer player);
     public abstract int getDeployLength();
-    public abstract String attacked(Location l);
+    public abstract ArrayList<Location> attacked(Location l);
 }

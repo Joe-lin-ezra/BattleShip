@@ -18,8 +18,9 @@ public class FighterAirplanePlayer extends AbstractPlayer implements Serializabl
         return fighterAirplaneLocation.size();
     }
 
-    public String attacked(Location l)
+    public ArrayList<Location> attacked(Location l)
     {
+        ArrayList<Location> result = new ArrayList<Location>();
         for(Integer index: fighterAirplaneLocation.keySet())
         {
             ArrayList<Location> locations = fighterAirplaneLocation.get(index);
@@ -27,9 +28,10 @@ public class FighterAirplanePlayer extends AbstractPlayer implements Serializabl
             if((location.x == l.x) && (location.y == l.y))
             {
                 fighterAirplaneLocation.remove(index);
-                return "success";
+                attackedLocation.addAll(locations);
+                return result;
             }
         }
-        return "fail";
+        return result;
     }
 }

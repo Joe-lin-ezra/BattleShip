@@ -39,7 +39,7 @@ public class BattleShipGameRMIImpl extends AbstractGameRMIImpl implements GameFr
 	}
 
 	// player go attack his/her opponent
-	public String attack(AbstractPlayer player, Location location) throws java.rmi.RemoteException
+	public ArrayList<Location> attack(AbstractPlayer player, Location location) throws java.rmi.RemoteException
 	{
 		Room room = rooms.get(player.roomId);
 		AbstractPlayer opponent = null;
@@ -47,7 +47,7 @@ public class BattleShipGameRMIImpl extends AbstractGameRMIImpl implements GameFr
 		// not the term belong the player
 		if(!room.term.equals(String.valueOf(player.id)))
 		{
-			return "fail";
+			return new ArrayList<Location>();
 		}
 
 		// find another player
@@ -58,10 +58,8 @@ public class BattleShipGameRMIImpl extends AbstractGameRMIImpl implements GameFr
 				opponent = another;
 			}
 		}
-		// put attacked location in to "attackedLocation" list
-		opponent.attackedLocation.add(location);
 
-		String result = opponent.attacked(location);
+		ArrayList<Location> result = opponent.attacked(location);
 		printState();
 		setWinner(player);
 		nextTerm(room, opponent);
