@@ -4,46 +4,28 @@ import java.util.*;
 import javax.swing.*;
 import java.awt.*;
 
-public class Client
+public class Client extends AbstractClient
 {
 	//static Scanner scaneer = new Scanner(System.in); // because static method need use static object
-	static Player player;
+	AbstractPlayer player;
 	//static Guishow guib = new Guishow();
 	//private static JFrame f;
-	static GameFrame	o = null;
+	GameFrame	o = null;
 	Client(){
-		player = new Player();
+		player = new BattleShipPlayer();
 		try
 		{
 			// default is localhost if connect other computer please modify here
-			o = (GameFrame) Naming.lookup("rmi://127.0.0.1/game");
-			//System.out.println("RMI server connected");
+			o = (GameFrame) Naming.lookup("rmi://127.0.0.1/BattleShip");
+			System.out.println("RMI server connected");
 		}
 		catch(Exception e)
 		{
 			System.out.println("Server lookup exception: " + e.getMessage());
 		}
 	}
-	public static void main(String args[]) // test only
-	{
 	
-		
-		String c = null;
-		int h=0;
-		try
-		{
-			// default is localhost if connect other computer please modify here
-			o = (GameFrame) Naming.lookup("rmi://127.0.0.1/game");
-			//System.out.println("RMI server connected");
-		}
-		catch(Exception e)
-		{
-			System.out.println("Server lookup exception: " + e.getMessage());
-		}
-		
-	}
-	
-	public static boolean login(String name)
+	public boolean login(String name)
 	{
 		
 		//System.out.print("input username: ");
@@ -63,7 +45,7 @@ public class Client
 		}
 	}
 
-	public static boolean join()
+	public boolean join()
 	{
 		try
 		{
@@ -78,7 +60,7 @@ public class Client
 			return false;
 		}
 	}
-	public static boolean getroomstate()
+	public boolean getroomstate()
 	{
 		try
 		{
@@ -99,7 +81,11 @@ public class Client
 		}
 		return false;
 	}
-	public static boolean setbattleship()
+	public void setlocation(ArrayList<Location> location){
+		BattleShipPlayer b = (BattleShipPlayer)player;
+		b.shipLocation=location;
+	}
+	public boolean setbattleship()
 	{
 		try
 		{
@@ -119,7 +105,7 @@ public class Client
 		}
 		return false;
 	}
-	public static boolean playing()
+	public boolean playing()
 	{
 		String term = null;
 		try
@@ -141,23 +127,23 @@ public class Client
 			return false;
 		}
 	}
-	public String attack(Location loc)
+	public ArrayList<Location> attack(Location loc)
 	{
-		String state = null;
+		ArrayList<Location> locat = new ArrayList<Location>();
 		try
 		{
-			state = o.attack(player,loc);
-			System.out.println(state);
-			return state;
+			locat = o.attack(player,loc);
+			//System.out.println(state);
+			return locat;
 		}
 		catch(Exception e)
 		{
 			System.out.println("GameServer exception: " + e.getMessage());
 			e.printStackTrace();
 		}
-		return state;
+		return locat;
 	}
-	public static void getSelfState(){
+	public void getSelfState(){
 		try
 		{
 			player=o.getSelfState(player);
@@ -168,7 +154,7 @@ public class Client
 			e.printStackTrace();
 		}
 	}
-	public static String isAlive(){
+	public String isAlive(){
 		String state = "";
 		try
 		{

@@ -29,7 +29,7 @@ public class GuishowFP{
 	private JTextField nickname;
 	private JTextArea area = new JTextArea();
 	private static final String COLS = "ABCDEFGHIJK";
-	private final JLabel message = new JLabel("Warship battle!!!!!");
+	private final JLabel message = new JLabel("Fighterplane battle!!!!!");
 	private boolean check_login = false;
 	private boolean check_join = false;
 	static boolean play = false;
@@ -50,6 +50,7 @@ public class GuishowFP{
 	public ArrayList<Location> location3 = new ArrayList<Location>();
 	public ArrayList<Location> location4 = new ArrayList<Location>();
 	public ArrayList<Location> location5 = new ArrayList<Location>();
+	public ArrayList<Location> locationatk = new ArrayList<Location>();
 	public Location locat = null;
 	GuishowFP(){
 		client = new ClientFP();
@@ -311,7 +312,8 @@ public class GuishowFP{
 								}
 							}
 							if(locat!=null){
-								if(client.attack(locat).equals("success")){
+								locationatk=client.attack(locat);
+								if(locationatk.isEmpty() != true){
 									area.append("attack Success!!\n");
 									s=1;
 									//System.out.println("sucess!!");
@@ -321,7 +323,9 @@ public class GuishowFP{
 									//System.out.println("fail");
 								}
 								if(s==1){
-											chessBoarde.setChessButtoncolor(locat.x,locat.y,Color.green);
+											for(Location loc : locationatk){
+												chessBoarde.setChessButtoncolor(loc.x,loc.y,Color.green);
+											}
 										}else{
 											chessBoarde.setChessButtoncolor(locat.x,locat.y,Color.yellow);
 										}
@@ -409,7 +413,7 @@ public class GuishowFP{
 	
 	public static void main(String args[]){
 		System.out.println("Hello Gui!!");
-		Guishow guib = new Guishow();
+		GuishowFP guib = new GuishowFP();
 		
 		//System.out.println(rr.isAlive());
 		//rr.run();
@@ -417,7 +421,7 @@ public class GuishowFP{
 			@Override
 			public void run(){
 				
-				f = new JFrame("warship");
+				f = new JFrame("Fighterplane");
 				f.add(guib.getGuia());
 				f.addWindowListener(close);
 				f.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);// let Gui close when user use "x"

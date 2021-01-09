@@ -12,7 +12,7 @@ public class ClientFP extends AbstractClient
 	//private static JFrame f;
 	GameFrame	o = null;
 	ClientFP(){
-		player = new BattleShipPlayer();
+		player = new FighterAirplanePlayer();
 		FighterAirplanePlayer b = (FighterAirplanePlayer)player;
 		//b.fighterAirplaneLocation.put(1, new ArrayList<>());
 		//b.fighterAirplaneLocation.put(2, new ArrayList<>());
@@ -22,8 +22,8 @@ public class ClientFP extends AbstractClient
 		try
 		{
 			// default is localhost if connect other computer please modify here
-			o = (GameFrame) Naming.lookup("rmi://127.0.0.1/game");
-			//System.out.println("RMI server connected");
+			o = (GameFrame) Naming.lookup("rmi://127.0.0.1/FighterAirplane");
+			System.out.println("RMI server connected");
 		}
 		catch(Exception e)
 		{
@@ -134,21 +134,21 @@ public class ClientFP extends AbstractClient
 			return false;
 		}
 	}
-	public String attack(Location loc)
+	public ArrayList<Location> attack(Location loc)
 	{
-		String state = null;
+		ArrayList<Location> attackloc = new ArrayList<Location>();
 		try
 		{
-			state = o.attack(player,loc);
-			System.out.println(state);
-			return state;
+			attackloc = o.attack(player,loc);
+			//System.out.println(state);
+			return attackloc;
 		}
 		catch(Exception e)
 		{
 			System.out.println("GameServer exception: " + e.getMessage());
 			e.printStackTrace();
 		}
-		return state;
+		return attackloc;
 	}
 	public void getSelfState(){
 		try

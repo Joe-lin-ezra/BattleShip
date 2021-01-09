@@ -47,6 +47,7 @@ public class Guishow{
 	String state=null;
 	public ArrayList<Location> location = new ArrayList<Location>(); // changing "Locate" to "Location"
 	public Location locat = null;
+	public ArrayList<Location> locationatk  = new ArrayList<Location>();
 	Guishow(){
 		client = new Client();
 		welcomepage();
@@ -222,7 +223,7 @@ public class Guishow{
 						area.append("your deploy is not ready!!!\n");
 						//System.out.println("error");
 					}else{
-						client.player.shipLocation = location;
+						client.setlocation(location);
 						//chessBoardz.closeChessboard();
 						if(client.setbattleship() == false){ //set locate
 							System.out.println("error!!");
@@ -284,7 +285,8 @@ public class Guishow{
 								}
 							}
 							if(locat!=null){
-								if(client.attack(locat).equals("success")){
+								locationatk = client.attack(locat);
+								if(locationatk.isEmpty() != true){
 									area.append("attack Success!!\n");
 									s=1;
 									//System.out.println("sucess!!");
@@ -294,7 +296,9 @@ public class Guishow{
 									//System.out.println("fail");
 								}
 								if(s==1){
-											chessBoarde.setChessButtoncolor(locat.x,locat.y,Color.green);
+										for(Location loc : locationatk){
+											chessBoarde.setChessButtoncolor(loc.x,loc.y,Color.green);
+										}
 										}else{
 											chessBoarde.setChessButtoncolor(locat.x,locat.y,Color.yellow);
 										}
