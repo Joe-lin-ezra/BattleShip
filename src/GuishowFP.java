@@ -34,11 +34,11 @@ public class GuishowFP{
 	private boolean check_join = false;
 	static boolean play = false;
 	//define deploy button
-	private JButton aircraft_carrier = new JButton("BBV"); //Shorthand
-	private JButton battleship = new JButton("BB");
-	private JButton cruiser = new JButton("CL");
-	private JButton destroyer = new JButton("DD");
-	private JButton submarine = new JButton("SS");
+	private JButton aircraft_carrier = new JButton("C"); //Shorthand
+	private JButton battleship = new JButton("F");
+	private JButton cruiser = new JButton("B");
+	private JButton destroyer = new JButton("A");
+	private JButton submarine = new JButton("U");
 	private JButton deployyy = new JButton("Deploy");
 	private JButton attack = new JButton("Attack");
 	//private Runnable rr;
@@ -158,7 +158,7 @@ public class GuishowFP{
 		guic.add(ground,BorderLayout.SOUTH);
 		ActionListener deployListener = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-                        if(e.getActionCommand() == "BBV"){
+                        if(e.getActionCommand() == "C"){
 							//System.out.println("BBV");
 							//System.out.println("5. is "+chessBoardz.getship_longth());
 							if(chessBoardz.getship_longth()==0){
@@ -167,7 +167,7 @@ public class GuishowFP{
 							}
 							
 							//chessBoardy.ship_longth=5;
-						}else if(e.getActionCommand() == "BB"){
+						}else if(e.getActionCommand() == "F"){
 							//System.out.println("BB");
 							if(chessBoardz.getship_longth()==0){
 								chessBoardz.ship_longth=4;
@@ -176,7 +176,7 @@ public class GuishowFP{
 							}
 							
 							//chessBoardy.ship_longth=4;
-						}else if(e.getActionCommand() == "CL"){
+						}else if(e.getActionCommand() == "B"){
 							System.out.println("CL");
 							if(chessBoardz.getship_longth()==0){
 								chessBoardz.ship_longth=3;
@@ -185,7 +185,7 @@ public class GuishowFP{
 							}
 							
 							//chessBoardy.ship_longth=3;
-						}else if(e.getActionCommand() == "DD"){
+						}else if(e.getActionCommand() == "A"){
 							//System.out.println("DD");
 							if(chessBoardz.getship_longth()==0){
 								chessBoardz.ship_longth=2;
@@ -194,7 +194,7 @@ public class GuishowFP{
 							}
 							
 							//chessBoardy.ship_longth=2;
-						}else if(e.getActionCommand() == "SS"){
+						}else if(e.getActionCommand() == "U"){
 							//System.out.println("SS");
 							if(chessBoardz.getship_longth()==0){
 								chessBoardz.ship_longth=1;
